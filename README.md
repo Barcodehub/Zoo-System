@@ -1,2 +1,6 @@
 # Zoo-System
-app para zoologicos Spring Boot y Postgre
+
+
+- Login con User (Admin y empleado)
+- Precarga de Admin
+- Debes tener una BD llamada 'zoo_db'
