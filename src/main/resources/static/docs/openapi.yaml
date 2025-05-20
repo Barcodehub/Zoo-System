@@ -1,0 +1,1665 @@
+openapi: "3.0.0"
+info:
+  title: ZOO System
+  description: API para gestión de zoologicos. Desarrollada con Spring boot y PostgreSQL.
+  contact:
+    name: Brayan Barco
+    url: alex.barco.maicol@gmail.com
+    email: alex.barco.maicol@gmail.com
+  version: 1.0.0
+  x-products:
+    - id: zoo-api
+      name: ZOO System
+      description: API de gestión de Zoologicos
+servers:
+  - url: http://localhost:8080
+    description: Servidor de desarrollo local
+  - url: http://localhost:8080
+    description: Servidor de desarrollo
+  - url: http://localhost:8080
+    description: Servidor de QA
+  - url: http://localhost:8080
+    description: Servidor de producción
+security:
+  - Security_Token: []
+paths:
+  /api/auth/login:
+    post:
+      tags:
+        - auth-controller
+      summary: Login
+      description: Iniciar Sesión (Admin / User)
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOAuthResponseDTO'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/users:
+    post:
+      tags:
+        - user-controller
+      summary: Register
+      description: El Admin puede Crear usuarios de rol empleado
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOUserResponseDTO'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/zones/{id}:
+    get:
+      tags:
+        - zone-controller
+      summary: Listar zonas
+      description: Obtener todas las zonas disponibles
+      operationId: getZoneById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOZoneResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    put:
+      tags:
+        - zone-controller
+      summary: Actualizar zona
+      description: Actualizar información de zona (solo Admin)
+      operationId: updateZone
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZoneRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOZoneResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    delete:
+      tags:
+        - zone-controller
+      summary: Eliminar zona
+      description: Eliminar zona (solo Admin, si no tiene animales)
+      operationId: deleteZone
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOVoid'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/species/{id}:
+    get:
+      tags:
+        - species-controller
+      summary: Listar especies
+      description: Obtener todas las especies registradas
+      operationId: getSpeciesById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOSpeciesResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    put:
+      tags:
+        - species-controller
+      summary: Actualizar especie
+      description: Actualizar información de especie (solo Admin)
+      operationId: updateSpecies
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeciesRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOSpeciesResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    delete:
+      tags:
+        - species-controller
+      summary: Eliminar especie
+      description: Eliminar especie (solo Admin, si no tiene animales)
+      operationId: deleteSpecies
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOVoid'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/animals/{id}:
+    get:
+      tags:
+        - animal-controller
+      summary: Obtener animal
+      description: Obtener detalles de un animal específico
+      operationId: getAnimalById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOAnimalResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    put:
+      tags:
+        - animal-controller
+      summary: Actualizar animal
+      description: Actualizar información de animal (solo Admin)
+      operationId: updateAnimal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnimalRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOAnimalResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    delete:
+      tags:
+        - animal-controller
+      summary: Eliminar animal
+      description: Eliminar animal y sus comentarios (solo Admin)
+      operationId: deleteAnimal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOVoid'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/zones:
+    get:
+      tags:
+        - zone-controller
+      summary: Listar zonas
+      description: Obtener todas las zonas disponibles
+      operationId: getAllZones
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOListZoneResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    post:
+      tags:
+        - zone-controller
+      summary: Crear zona
+      description: Crear nueva zona (solo Admin)
+      operationId: createZone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZoneRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOZoneResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/species:
+    get:
+      tags:
+        - species-controller
+      summary: Listar especies
+      description: Obtener todas las especies registradas
+      operationId: getAllSpecies
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOListSpeciesResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    post:
+      tags:
+        - species-controller
+      summary: Crear especie
+      description: Registrar nueva especie (solo Admin)
+      operationId: createSpecies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeciesRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOSpeciesResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/comments:
+    post:
+      tags:
+        - comment-controller
+      summary: Crear comentario
+      description: Agregar comentario a un animal (Admin y Empleados)
+      operationId: addCommentToAnimal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/comments/{commentId}/replies:
+    post:
+      tags:
+        - comment-controller
+      summary: Responder comentario
+      description: Agregar respuesta a un comentario existente
+      operationId: addReplyToComment
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/animals:
+    get:
+      tags:
+        - animal-controller
+      summary: Listar animales
+      description: Obtener todos los animales registrados
+      operationId: getAllAnimals
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOListAnimalResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    post:
+      tags:
+        - animal-controller
+      summary: Crear animal
+      description: Registrar nuevo animal (solo Admin)
+      operationId: createAnimal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnimalRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOAnimalResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/stats/search:
+    get:
+      tags:
+        - stats-controller
+      summary: Búsqueda global
+      description: Buscar en zonas, animales, comentarios y respuestas
+      operationId: search
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/stats/answered-comments-percentage:
+    get:
+      tags:
+        - stats-controller
+      summary: Porcentaje de Comentarios respondidos
+      description: Porcentaje de comentarios que han recibido respuesta
+      operationId: getAnsweredCommentsPercentage
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: number
+                format: double
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/stats/animals-by-zone:
+    get:
+      tags:
+        - stats-controller
+      summary: Animales por zona
+      description: Conteo de animales agrupados por zona
+      operationId: getAnimalsByZone
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalCountByZone'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/stats/animals-by-species:
+    get:
+      tags:
+        - stats-controller
+      summary: Animales por especie
+      description: Conteo de animales agrupados por especie
+      operationId: getAnimalsBySpecies
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalCountBySpecies'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/stats/animals-by-date:
+    get:
+      tags:
+        - stats-controller
+      summary: Animales por fecha
+      description: Listar animales registrados en fecha específica con detalles
+      operationId: getAnimalsByDate
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalDetailResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/comments/{commentId}:
+    get:
+      tags:
+        - comment-controller
+      summary: Obtener comentario
+      description: Obtener comentario con sus respuestas
+      operationId: getCommentWithReplies
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+    delete:
+      tags:
+        - comment-controller
+      summary: Eliminar comentario
+      description: Eliminar comentario y sus respuestas (Admin puede borrar cualquier
+      operationId: deleteComment
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/comments/animal/{animalId}:
+    get:
+      tags:
+        - comment-controller
+      summary: Comentarios de animal
+      description: Obtener todos los comentarios de un animal específico
+      operationId: getCommentsForAnimal
+      parameters:
+        - name: animalId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+  /api/animals/by-date:
+    get:
+      tags:
+        - animal-controller
+      summary: Animales por fecha
+      description: Listar animales registrados en una fecha específica
+      operationId: getAnimalsByDate_1
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTOListAnimalResponse'
+        '400':
+          $ref: '#/components/responses/badRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/forbiddenResponse'
+        '404':
+          $ref: '#/components/responses/notFoundResponse'
+        '406':
+          $ref: '#/components/responses/notAcceptableResponse'
+        '413':
+          $ref: '#/components/responses/payloadTooLargeResponse'
+        '415':
+          $ref: '#/components/responses/unsupportedMediaTypeResponse'
+        '429':
+          $ref: '#/components/responses/tooManyRequestsResponse'
+        '500':
+          $ref: '#/components/responses/internalServerErrorResponse'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableResponse'
+components:
+  schemas:
+    StandardError:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 2
+          maxLength: 20
+          description: Código del error
+          example: PERR100
+        description:
+          type: string
+          minLength: 2
+          maxLength: 250
+          description: Descripción del error
+          example: Error de validación
+        field:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Campo con error
+          example: email
+        traceId:
+          type: string
+          format: uuid
+          description: ID de traza para diagnóstico
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      required:
+        - code
+        - description
+
+    StandardErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardError'
+    ZoneRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    AnimalSimpleResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    SuccessResponseDTOZoneResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ZoneResponse'
+        errors: {}
+    ZoneResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        animals:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalSimpleResponse'
+    SpeciesRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    SpeciesResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    SuccessResponseDTOSpeciesResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SpeciesResponse'
+        errors: {}
+    AnimalRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        speciesId:
+          type: integer
+          format: int64
+        zoneId:
+          type: integer
+          format: int64
+    AnimalResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        species:
+          $ref: '#/components/schemas/SpeciesSimpleResponse'
+        zone:
+          $ref: '#/components/schemas/ZoneSimpleResponse'
+        registrationDate:
+          type: string
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentSimpleResponse'
+    CommentSimpleResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        message:
+          type: string
+        author:
+          type: string
+        createdAt:
+          type: string
+    SpeciesSimpleResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    SuccessResponseDTOAnimalResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AnimalResponse'
+        errors: {}
+    ZoneSimpleResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    UserRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+      required:
+        - email
+        - name
+        - password
+    SuccessResponseDTOUserResponseDTO:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserResponseDTO'
+        errors: {}
+    UserResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - EMPLOYEE
+    CommentRequest:
+      type: object
+      properties:
+        animalId:
+          type: integer
+          format: int64
+        message:
+          type: string
+    CommentResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        message:
+          type: string
+        author:
+          type: string
+        createdAt:
+          type: string
+        animalId:
+          type: integer
+          format: int64
+        parentCommentId:
+          type: integer
+          format: int64
+        replies:
+          type: array
+          items: {}
+    AuthRequestDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+      required:
+        - email
+        - password
+    AuthResponseDTO:
+      type: object
+      properties:
+        token:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - EMPLOYEE
+    SuccessResponseDTOAuthResponseDTO:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AuthResponseDTO'
+        errors: {}
+    SuccessResponseDTOListZoneResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZoneResponse'
+        errors: {}
+    AnimalSearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        species:
+          type: string
+        zone:
+          type: string
+    CommentSearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        message:
+          type: string
+        author:
+          type: string
+        createdAt:
+          type: string
+        animalId:
+          type: integer
+          format: int64
+        animalName:
+          type: string
+    ReplySearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        message:
+          type: string
+        author:
+          type: string
+        createdAt:
+          type: string
+        commentId:
+          type: integer
+          format: int64
+        commentMessage:
+          type: string
+        animalId:
+          type: integer
+          format: int64
+        animalName:
+          type: string
+    SearchResults:
+      type: object
+      properties:
+        zones:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZoneSearchResult'
+        animals:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalSearchResult'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentSearchResult'
+        replies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReplySearchResult'
+    ZoneSearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    AnimalCountByZone:
+      type: object
+      properties:
+        zoneName:
+          type: string
+        animalCount:
+          type: integer
+          format: int64
+    AnimalCountBySpecies:
+      type: object
+      properties:
+        speciesName:
+          type: string
+        animalCount:
+          type: integer
+          format: int64
+    AnimalDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        species:
+          type: string
+        zone:
+          type: string
+        registrationDate:
+          type: string
+    SuccessResponseDTOListSpeciesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpeciesResponse'
+        errors: {}
+    SuccessResponseDTOListAnimalResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalResponse'
+        errors: {}
+    SuccessResponseDTOVoid:
+      type: object
+      properties:
+        data: {}
+        errors: {}
+  securitySchemes:
+    Security_Token:
+      type: http
+      description: Access Token For My API
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    badRequestResponse:
+      description: Solicitud incorrecta
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            BadRequest:
+              value:
+                errors:
+                  - code: "400"
+                    description: "El campo ' ' es requerido"
+                    field: "email"
+                    traceId: "550e8400-e29b-41d4-a716-446655440000"
+
+    unauthorizedResponse:
+      description: No autorizado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            Unauthorized:
+              value:
+                errors:
+                  - code: "401"
+                    description: "Token de acceso no válido o expirado"
+
+    forbiddenResponse:
+      description: Prohibido
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            Forbidden:
+              value:
+                errors:
+                  - code: "403"
+                    description: "No tiene permisos para acceder a este recurso"
+
+    notFoundResponse:
+      description: No encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            NotFound:
+              value:
+                errors:
+                  - code: "404"
+                    description: "Elemento no encontrado"
+
+    internalServerErrorResponse:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            InternalError:
+              value:
+                errors:
+                  - code: "500"
+                    description: "Error interno del servidor"
+
+    notAcceptableResponse:
+      description: No aceptable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            NotAcceptable:
+              value:
+                errors:
+                  - code: "406"
+                    description: "El encabezado Accept no incluye un tipo de medio soportado"
+
+    payloadTooLargeResponse:
+      description: Carga útil demasiado grande
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            PayloadTooLarge:
+              value:
+                errors:
+                  - code: "413"
+                    description: "La carga útil de la solicitud excede el límite permitido"
+
+    unsupportedMediaTypeResponse:
+      description: Tipo de medio no soportado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            UnsupportedMediaType:
+              value:
+                errors:
+                  - code: "415"
+                    description: "El tipo de medio de la solicitud no está soportado"
+
+    tooManyRequestsResponse:
+      description: Demasiadas solicitudes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            TooManyRequests:
+              value:
+                errors:
+                  - code: "429"
+                    description: "Se ha excedido el límite de tasa de solicitudes"
+
+    serviceUnavailableResponse:
+      description: Servicio no disponible
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardErrorResponse'
+          examples:
+            ServiceUnavailable:
+              value:
+                errors:
+                  - code: "503"
+                    description: "El servicio no está disponible temporalmente"

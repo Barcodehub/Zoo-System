@@ -1,0 +1,1178 @@
+{
+	"info": {
+		"_postman_id": "4f4d09fb-f827-44f5-9b11-01ae9ca58d5e",
+		"name": "Zoo_Spring",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32173760"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const response = pm.response.json();\r",
+									"    const token = response.data?.token;\r",
+									"\r",
+									"    if (token) {\r",
+									"        pm.environment.set(\"authToken\", token);\r",
+									"        console.log(\"Token guardado:\", token);\r",
+									"    } else {\r",
+									"        console.warn(\"No se encontró el token en la respuesta.\");\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@mail.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "### Login Endpoint\n\nThis endpoint is used to authenticate a user and obtain an access token for further API requests. (ADMIN - SOCIO)\n\n#### Request Body\n\n- `email` (string): The email address of the user.\n    \n- `password` (string): The password of the user.\n    \n\n#### Response\n\nThe response will include the authentication token along with other relevant user information."
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE SOCIO",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Juan Pérez\",\r\n    \"email\": \"juanexample.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ZONES",
+			"item": [
+				{
+					"name": "CREATE ZONA",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Zona de sas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/zones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"zones"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT ZONE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Zona editada\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/zones/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"zones",
+								"4"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET ZONES",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/zones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"zones"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH ZONES",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/zones/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"zones",
+								"1"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Zone",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/zones/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"zones",
+								"4"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SPECIES",
+			"item": [
+				{
+					"name": "CREATE SPECIE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ses\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/species",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"species"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT SPECIE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"sas2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/species/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"species",
+								"4"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET SPECIES",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/species",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"species"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE SPECIE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/species/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"species",
+								"4"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH SPECIE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/species/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"species",
+								"1"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ANIMALS",
+			"item": [
+				{
+					"name": "CREATE ANIMAL",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"León Simba\",\r\n  \"speciesId\": 1,\r\n  \"zoneId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"animals"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "EDIT ANIMAL",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"León Simba\", //y si no le quiero cambiar el nombre?\r\n  \"speciesId\": 2,\r\n  \"zoneId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/animals/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"animals",
+								"2"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET ANIMALS",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"animals"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ANIMAL",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/animals/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"animals",
+								"3"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH ANIMALS",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/animals/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"animals",
+								"1"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH ANIMALS x DATE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/animals/by-date?date=2025-05-20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"animals",
+								"by-date"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-05-20"
+								}
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "COMMENTS",
+			"item": [
+				{
+					"name": "CREATE COMMENT",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"message\": \"El león parece muy saludable\",\r\n  \"animalId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comments"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE COMMENT REPLY",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"message\": \"No es cierto\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/comments/3/replies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comments",
+								"3",
+								"replies"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET COMMENTS",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/comments/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comments",
+								"3"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET COMMENTS x Animal",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/comments/animal/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comments",
+								"animal",
+								"1"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET COMMENTS Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/comments/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comments",
+								"1"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stats",
+			"item": [
+				{
+					"name": "GET ANIMALS x Zone",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/stats/animals-by-zone",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stats",
+								"animals-by-zone"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET ANIMALS x Specie",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/stats/animals-by-species",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stats",
+								"animals-by-species"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET ANIMALS x Date",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/stats/animals-by-date?date=2025-05-20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stats",
+								"animals-by-date"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-05-20"
+								}
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET ANIMALS GENERAL",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/stats/search?query=leon",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stats",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "leon"
+								}
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				},
+				{
+					"name": "GET % COMMENTS replied",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/stats/answered-comments-percentage",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stats",
+								"answered-comments-percentage"
+							]
+						},
+						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
