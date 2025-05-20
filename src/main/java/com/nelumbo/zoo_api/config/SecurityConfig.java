@@ -53,6 +53,29 @@ public class SecurityConfig {
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/users").hasAuthority("ROLE_ADMIN") //hasAnyAuthority
 
+
+                                .requestMatchers(HttpMethod.GET, "/api/animals/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.POST, "/api/animals/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/animals/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/animals/**").hasAuthority("ROLE_ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/api/species/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.POST, "/api/species/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/species/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/species/**").hasAuthority("ROLE_ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/api/zones/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.POST, "/api/zones/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/zones/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/zones/**").hasAuthority("ROLE_ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/api/comments/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.DELETE, "/api/comments/**").hasAuthority("ROLE_ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/api/stats/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/stats/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/stats/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/stats/**").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager->
