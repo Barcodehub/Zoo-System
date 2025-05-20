@@ -93,6 +93,18 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDTO(null, List.of(errorDetail)));
     }
 
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleEmailExists(EmailAlreadyExistsException ex) {
+        ErrorDetailDTO error = new ErrorDetailDTO(
+                "400", // "USER_001"
+                ex.getMessage(),
+                ex.getFieldName() // "email"
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDTO(null, List.of(error)));
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleInternalError(Exception ex) {
