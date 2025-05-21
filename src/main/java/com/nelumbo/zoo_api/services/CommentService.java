@@ -1,5 +1,6 @@
 package com.nelumbo.zoo_api.services;
 
+import com.nelumbo.zoo_api.dto.CommentReplyRequest;
 import com.nelumbo.zoo_api.dto.CommentRequest;
 import com.nelumbo.zoo_api.dto.CommentResponse;
 import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
@@ -9,6 +10,7 @@ import com.nelumbo.zoo_api.models.User;
 import com.nelumbo.zoo_api.repository.AnimalRepository;
 import com.nelumbo.zoo_api.repository.CommentRepository;
 import com.nelumbo.zoo_api.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +26,11 @@ public class CommentService {
     private final AnimalRepository animalRepository;
     private final UserRepository userRepository;
 
-    public CommentResponse addCommentToAnimal(CommentRequest request, String userEmail) {
+    public CommentResponse addCommentToAnimal(@Valid CommentRequest request, String userEmail) {
         Animal animal = animalRepository.findById(request.animalId())
-                .orElseThrow(() -> new ResourceNotFoundException("Animal not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "animalId"));
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found", null));
 
         Comment comment = new Comment();
         comment.setMessage(request.message());
@@ -40,13 +42,13 @@ public class CommentService {
         return mapToCommentResponse(comment);
     }
 
-    public CommentResponse addReplyToComment(Long commentId, CommentRequest request, String userEmail) {
+    public CommentResponse addReplyToComment(Long commentId, CommentReplyRequest request, String userEmail) {
 
         Comment parentComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found", "commentId"));
 
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found", null));
 
         Comment reply = new Comment();
         reply.setMessage(request.message());
@@ -62,7 +64,7 @@ public class CommentService {
     public List<CommentResponse> getCommentsForAnimal(
             @PathVariable Long animalId) {
         animalRepository.findById(animalId)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "animalId"));
 
         return commentRepository.findByAnimalIdAndParentCommentIsNull(animalId).stream()
                 .map(this::mapToCommentResponse)
@@ -71,14 +73,14 @@ public class CommentService {
 
     public CommentResponse getCommentWithReplies(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found", "commentId"));
 
         return mapToCommentResponse(comment);
     }
 
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found", "commentId"));
 
         commentRepository.delete(comment);
     }

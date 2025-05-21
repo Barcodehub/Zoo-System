@@ -4,8 +4,10 @@ import com.nelumbo.zoo_api.dto.AnimalRequest;
 import com.nelumbo.zoo_api.dto.AnimalResponse;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.services.AnimalService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +21,10 @@ import java.util.List;
 public class AnimalController {
     private final AnimalService animalService;
 
-    @PostMapping
-    public ResponseEntity<SuccessResponseDTO<AnimalResponse>> createAnimal(@RequestBody AnimalRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(animalService.createAnimal(request));
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public SuccessResponseDTO<AnimalResponse> createAnimal(@Valid @RequestBody AnimalRequest request) {
+        return animalService.createAnimal(request);
     }
 
     @GetMapping

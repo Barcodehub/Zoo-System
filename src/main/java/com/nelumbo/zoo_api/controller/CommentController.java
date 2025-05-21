@@ -1,8 +1,10 @@
 package com.nelumbo.zoo_api.controller;
 
+import com.nelumbo.zoo_api.dto.CommentReplyRequest;
 import com.nelumbo.zoo_api.dto.CommentRequest;
 import com.nelumbo.zoo_api.dto.CommentResponse;
 import com.nelumbo.zoo_api.services.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<CommentResponse> addCommentToAnimal(
-            @RequestBody CommentRequest request,
+            @Valid @RequestBody CommentRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(commentService.addCommentToAnimal(request, userDetails.getUsername()));
@@ -29,7 +31,7 @@ public class CommentController {
     @PostMapping("/{commentId}/replies")
     public ResponseEntity<CommentResponse> addReplyToComment(
             @PathVariable Long commentId,
-            @RequestBody CommentRequest request,
+            @RequestBody CommentReplyRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(commentService.addReplyToComment(commentId, request, userDetails.getUsername()));

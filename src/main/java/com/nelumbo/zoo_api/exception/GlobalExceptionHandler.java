@@ -178,36 +178,35 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
+    public ResponseEntity<ErrorDetailDTO> handleResourceNotFound(ResourceNotFoundException ex) {
+        ErrorDetailDTO response = new ErrorDetailDTO(
+                "RESOURCE_NOT_FOUND",
                 ex.getMessage(),
-                System.currentTimeMillis()
+                ex.getField()
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleResourceAlreadyExists(ResourceAlreadyExistsException ex) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.CONFLICT.value(),
+    public ResponseEntity<ErrorDetailDTO> handleResourceAlreadyExists(ResourceAlreadyExistsException ex) {
+        ErrorDetailDTO response = new ErrorDetailDTO(
+                "RESOURCE_ALREADY_EXISTS",
                 ex.getMessage(),
-                System.currentTimeMillis()
+                ex.getField()
         );
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(IllegalOperationException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalOperation(IllegalOperationException ex) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
+    public ResponseEntity<ErrorDetailDTO> handleIllegalOperation(IllegalOperationException ex) {
+        ErrorDetailDTO response = new ErrorDetailDTO(
+                "ILLEGAL_OPERATION",
                 ex.getMessage(),
-                System.currentTimeMillis()
+                ex.getField()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    record ErrorResponse(int status, String message, long timestamp) {}
 
 
 }

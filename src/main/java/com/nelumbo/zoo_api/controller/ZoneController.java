@@ -4,6 +4,7 @@ import com.nelumbo.zoo_api.dto.ZoneRequest;
 import com.nelumbo.zoo_api.dto.ZoneResponse;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.services.ZoneService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ZoneController {
     private final ZoneService zoneService;
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDTO<ZoneResponse>> createZone(@RequestBody ZoneRequest request) {
+    public ResponseEntity<SuccessResponseDTO<ZoneResponse>> createZone(@Valid @RequestBody ZoneRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(zoneService.createZone(request));
     }
 
@@ -35,7 +36,7 @@ public class ZoneController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponseDTO<ZoneResponse>> updateZone(
-            @PathVariable Long id,
+            @Valid @PathVariable Long id,
             @RequestBody ZoneRequest request) {
         return ResponseEntity.ok(zoneService.updateZone(id, request));
     }

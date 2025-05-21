@@ -10,9 +10,9 @@ import com.nelumbo.zoo_api.repository.AnimalRepository;
 import com.nelumbo.zoo_api.repository.CommentRepository;
 import com.nelumbo.zoo_api.repository.SpeciesRepository;
 import com.nelumbo.zoo_api.repository.ZoneRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -26,11 +26,12 @@ public class AnimalService {
     private final ZoneRepository zoneRepository;
     private final CommentRepository commentRepository;
 
-    public SuccessResponseDTO<AnimalResponse> createAnimal(AnimalRequest request) {
-        Species species = speciesRepository.findById(request.speciesId())
-                .orElseThrow(() -> new ResourceNotFoundException("Species not found"));
-        Zone zone = zoneRepository.findById(request.zoneId())
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+    public SuccessResponseDTO<AnimalResponse> createAnimal(@Valid AnimalRequest request) {
+        Species species = request.speciesId() != null ?
+                speciesRepository.findById(request.speciesId()).orElse(null) : null;
+
+        Zone zone = request.zoneId() != null ?
+                zoneRepository.findById(request.zoneId()).orElse(null) : null;
 
         Animal animal = new Animal();
         animal.setName(request.name());
@@ -50,17 +51,18 @@ public class AnimalService {
 
     public SuccessResponseDTO<AnimalResponse> getAnimalById(Long id) {
         Animal animal = animalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "id"));
         return new SuccessResponseDTO<>(mapToAnimalResponse(animal));
     }
 
     public SuccessResponseDTO<AnimalResponse> updateAnimal(Long id, AnimalRequest request) {
         Animal animal = animalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal not found"));
-        Species species = speciesRepository.findById(request.speciesId())
-                .orElseThrow(() -> new ResourceNotFoundException("Species not found"));
-        Zone zone = zoneRepository.findById(request.zoneId())
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "id"));
+        Species species = request.speciesId() != null ?
+                speciesRepository.findById(request.speciesId()).orElse(null) : null;
+
+        Zone zone = request.zoneId() != null ?
+                zoneRepository.findById(request.zoneId()).orElse(null) : null;
 
         animal.setName(request.name());
         animal.setSpecies(species);
@@ -72,7 +74,7 @@ public class AnimalService {
 
     public SuccessResponseDTO<Void> deleteAnimal(Long id) {
         Animal animal = animalRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "id"));
         animalRepository.delete(animal);
         return new SuccessResponseDTO<>(null);
     }

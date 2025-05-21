@@ -5,27 +5,25 @@ import com.nelumbo.zoo_api.dto.ZoneRequest;
 import com.nelumbo.zoo_api.dto.ZoneResponse;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.exception.IllegalOperationException;
-import com.nelumbo.zoo_api.exception.ResourceAlreadyExistsException;
-import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
 import com.nelumbo.zoo_api.models.Zone;
 import com.nelumbo.zoo_api.repository.AnimalRepository;
 import com.nelumbo.zoo_api.repository.ZoneRepository;
+import com.nelumbo.zoo_api.validation.annotations.ZonaExist;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class ZoneService {
     private final ZoneRepository zoneRepository;
     private final AnimalRepository animalRepository;
 
-    public SuccessResponseDTO<ZoneResponse> createZone(ZoneRequest request) {
-        if (zoneRepository.existsByName(request.name())) {
-            throw new ResourceAlreadyExistsException("Zone with this name already exists");
-        }
-
+    public SuccessResponseDTO<ZoneResponse> createZone(@Valid ZoneRequest request) {
         Zone zone = new Zone();
         zone.setName(request.name());
         zone = zoneRepository.save(zone);
@@ -40,32 +38,23 @@ public class ZoneService {
                 );
     }
 
-    public SuccessResponseDTO<ZoneResponse> getZoneById(Long id) {
-        Zone zone = zoneRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+    public SuccessResponseDTO<ZoneResponse> getZoneById(@ZonaExist Long id) {
+        Zone zone = zoneRepository.getReferenceById(id);
         return new SuccessResponseDTO<>(mapToZoneResponse(zone));
     }
 
-    public SuccessResponseDTO<ZoneResponse> updateZone(Long id, ZoneRequest request) {
-        Zone zone = zoneRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
-
-        if (!zone.getName().equals(request.name()) &&
-                zoneRepository.existsByName(request.name())) {
-            throw new ResourceAlreadyExistsException("Zone with this name already exists");
-        }
-
+    public SuccessResponseDTO<ZoneResponse> updateZone(@Valid @ZonaExist Long id, ZoneRequest request) {
+        Zone zone = zoneRepository.getReferenceById(id);
         zone.setName(request.name());
         zone = zoneRepository.save(zone);
         return new SuccessResponseDTO<>(mapToZoneResponse(zone));
     }
 
-    public SuccessResponseDTO<Void> deleteZone(Long id) {
-        Zone zone = zoneRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+    public SuccessResponseDTO<Void> deleteZone(@ZonaExist Long id) {
+        Zone zone = zoneRepository.getReferenceById(id);
 
         if (animalRepository.existsByZone(zone)) {
-            throw new IllegalOperationException("Cannot delete zone with associated animals");
+            throw new IllegalOperationException("Cannot delete zone with associated animals", null);
         }
 
         zoneRepository.delete(zone);

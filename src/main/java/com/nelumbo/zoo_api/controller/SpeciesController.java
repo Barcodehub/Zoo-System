@@ -4,6 +4,7 @@ import com.nelumbo.zoo_api.dto.SpeciesRequest;
 import com.nelumbo.zoo_api.dto.SpeciesResponse;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.services.SpeciesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class SpeciesController {
     private final SpeciesService speciesService;
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDTO<SpeciesResponse>> createSpecies(@RequestBody SpeciesRequest request) {
+    public ResponseEntity<SuccessResponseDTO<SpeciesResponse>> createSpecies(@Valid @RequestBody SpeciesRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(speciesService.createSpecies(request));
     }
 
@@ -34,7 +35,7 @@ public class SpeciesController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponseDTO<SpeciesResponse>> updateSpecies(
-            @PathVariable Long id,
+            @Valid @PathVariable Long id,
             @RequestBody SpeciesRequest request) {
         return ResponseEntity.ok(speciesService.updateSpecies(id, request));
     }
