@@ -1,6 +1,7 @@
 package com.nelumbo.zoo_api.services;
 
 import com.nelumbo.zoo_api.dto.*;
+import com.nelumbo.zoo_api.dto.errors.ResponseMessages;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.models.Animal;
 import com.nelumbo.zoo_api.models.Species;
@@ -50,9 +51,12 @@ public class AnimalService {
     }
 
     public SuccessResponseDTO<List<AnimalResponse>> getAllAnimals() {
-        return new SuccessResponseDTO<>(animalRepository.findAll().stream()
+        List<AnimalResponse> result = animalRepository.findAll().stream()
                 .map(this::mapToAnimalResponse)
-                .toList());
+                .toList();
+        return result.isEmpty()
+                ? new SuccessResponseDTO<>(null, ResponseMessages.NO_ANIMALS)
+                : new SuccessResponseDTO<>(result);
     }
 
     public SuccessResponseDTO<AnimalResponse> getAnimalById(@AnimalExists Long id) {
@@ -82,14 +86,6 @@ public class AnimalService {
         return new SuccessResponseDTO<>(null);
     }
 
-    public SuccessResponseDTO<List<AnimalResponse>> getAnimalsByDate(LocalDate date) {
-        Date startDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date endDate = Date.from(date.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
-
-        return new SuccessResponseDTO<>(animalRepository.findByRegistrationDateBetween(startDate, endDate).stream()
-                .map(this::mapToAnimalResponse)
-                .toList());
-    }
 
     private AnimalResponse mapToAnimalResponse(Animal animal) {
         List<CommentSimpleResponse> comments = animal.getComments().stream()

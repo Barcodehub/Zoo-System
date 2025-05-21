@@ -1,6 +1,7 @@
 package com.nelumbo.zoo_api.repository;
 
 import com.nelumbo.zoo_api.models.Animal;
+import com.nelumbo.zoo_api.models.Comment;
 import com.nelumbo.zoo_api.models.Species;
 import com.nelumbo.zoo_api.models.Zone;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
@@ -40,4 +42,10 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     List<Animal> findByRegistrationDate(LocalDate date);
 
     List<Animal> findByNameContainingIgnoreCase(String name);
+
+
+    @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.replies WHERE c.animal.id = :animalId AND c.parentComment IS NULL")
+    List<Comment> findByAnimalIdAndParentCommentIsNullWithReplies(@Param("animalId") Long animalId);
+
+    Optional<Animal> findByIdAndZoneId(Long id, Long zoneId);
 }

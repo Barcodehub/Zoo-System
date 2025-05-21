@@ -1,31 +1,44 @@
 package com.nelumbo.zoo_api.services;
 
+
 import com.nelumbo.zoo_api.dto.CommentReplyRequest;
 import com.nelumbo.zoo_api.dto.CommentRequest;
 import com.nelumbo.zoo_api.dto.CommentResponse;
+import com.nelumbo.zoo_api.dto.CommentResponse2;
+import com.nelumbo.zoo_api.dto.errors.ResponseMessages;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
 import com.nelumbo.zoo_api.models.Animal;
 import com.nelumbo.zoo_api.models.Comment;
 import com.nelumbo.zoo_api.models.User;
+import com.nelumbo.zoo_api.models.Zone;
 import com.nelumbo.zoo_api.repository.AnimalRepository;
 import com.nelumbo.zoo_api.repository.CommentRepository;
 import com.nelumbo.zoo_api.repository.UserRepository;
+import com.nelumbo.zoo_api.repository.ZoneRepository;
+import com.nelumbo.zoo_api.validation.annotations.AnimalExists;
+import com.nelumbo.zoo_api.validation.annotations.ZonaExist;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class CommentService {
     private final CommentRepository commentRepository;
     private final AnimalRepository animalRepository;
     private final UserRepository userRepository;
+    private final ZoneRepository zoneRepository;
+
 
     public SuccessResponseDTO<CommentResponse> addCommentToAnimal(@Valid CommentRequest request, String userEmail) {
 
@@ -58,14 +71,36 @@ public class CommentService {
         return new SuccessResponseDTO<>( mapToCommentResponse(reply));
     }
 
-    public SuccessResponseDTO<List<CommentResponse>> getCommentsForAnimal(
-            @PathVariable Long animalId) {
-        Animal animal = getAnimal(animalId);
+    public SuccessResponseDTO<List<CommentResponse2>> getCommentsForAnimal(@ZonaExist Long zoneId, Long animalId) {
 
-        return new SuccessResponseDTO<>(
-                commentRepository.findByAnimalIdAndParentCommentIsNull(animalId).stream()
+        Zone zone = zoneRepository.getReferenceById(zoneId);
+
+        // 1. Validar que la zona y el animal existen y están relacionados
+        Animal animal = animalRepository.findByIdAndZoneId(animalId, zoneId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal no encontrado en la zona especificada", null));
+
+        // 2. Obtener comentarios principales (sin parent) con sus respuestas en una sola consulta
+        List<Comment> topLevelComments = commentRepository.findByAnimalIdAndParentCommentIsNullWithReplies(animalId);
+
+        // 3. Mapear a DTO con estructura jerárquica
+        List<CommentResponse2> comments = topLevelComments.stream()
+                .map(comment -> mapToCommentResponseWithReplies(comment, zone, animal))
+                .toList();
+
+        // 4. Retornar respuesta
+        return comments.isEmpty()
+                ? new SuccessResponseDTO<>(null, ResponseMessages.NO_COMMENTS_FOR_ANIMAL)
+                : new SuccessResponseDTO<>(comments);
+    }
+
+
+    public SuccessResponseDTO<List<CommentResponse>> getAllComments() {
+        List<CommentResponse> result = commentRepository.findAll().stream()
                 .map(this::mapToCommentResponse)
-                .toList());
+                .toList();
+        return result.isEmpty()
+                ? new SuccessResponseDTO<>(null, ResponseMessages.NO_COMMENTS)
+                : new SuccessResponseDTO<>(result);
     }
 
     public SuccessResponseDTO<CommentResponse> getCommentWithReplies(Long commentId) {
@@ -74,8 +109,17 @@ public class CommentService {
         return new SuccessResponseDTO<>( mapToCommentResponse(comment));
     }
 
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId, String currentUserEmail, boolean isAdmin) {
         Comment comment = getCommentOrThrow(commentId);
+
+        // Solo permite borrar si es el autor o admin
+        String authorEmail = userRepository.findEmailByFullName(comment.getAuthor())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + comment.getAuthor(), null));
+
+        if (!isAdmin && !authorEmail.equals(currentUserEmail)) {
+            throw new AccessDeniedException("No tienes permiso para borrar este comentario");
+        }
+
 
         commentRepository.delete(comment);
     }
@@ -116,4 +160,29 @@ public class CommentService {
                 replies
         );
     }
+
+
+    private CommentResponse2 mapToCommentResponseWithReplies(Comment comment, Zone zone, Animal animal) {
+        return new CommentResponse2(
+                comment.getId(),
+                comment.getMessage(),
+                comment.getAuthor(),
+                formatDate(comment.getCreatedAt()),
+                animal.getId(),
+                animal.getName(),
+                zone.getId(),
+                zone.getName(),
+                comment.getParentComment() != null ? comment.getParentComment().getId() : null,
+                comment.getReplies().stream()
+                        .map(reply -> mapToCommentResponseWithReplies(reply, zone, animal))
+                        .toList()
+        );
+    }
+    private String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(date);
+    }
+
+
+
 }

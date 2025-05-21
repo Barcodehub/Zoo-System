@@ -50,9 +50,5 @@ public class AnimalController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/by-date")
-    public ResponseEntity<SuccessResponseDTO<List<AnimalResponse>>> getAnimalsByDate(@RequestParam String date) {
-        LocalDate localDate = LocalDate.parse(date);
-        return ResponseEntity.ok(animalService.getAnimalsByDate(localDate));
-    }
+
 }

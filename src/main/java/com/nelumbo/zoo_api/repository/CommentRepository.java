@@ -39,4 +39,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findByMessageContainingIgnoreCaseAndParentCommentIsNull(String message);
     List<Comment> findByMessageContainingIgnoreCaseAndParentCommentIsNotNull(String message);
+    @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.replies WHERE c.animal.id = :animalId AND c.parentComment IS NULL")
+    List<Comment> findByAnimalIdAndParentCommentIsNullWithReplies(@Param("animalId") Long animalId);
 }

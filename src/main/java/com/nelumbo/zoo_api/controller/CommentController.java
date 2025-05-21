@@ -3,6 +3,7 @@ package com.nelumbo.zoo_api.controller;
 import com.nelumbo.zoo_api.dto.CommentReplyRequest;
 import com.nelumbo.zoo_api.dto.CommentRequest;
 import com.nelumbo.zoo_api.dto.CommentResponse;
+import com.nelumbo.zoo_api.dto.CommentResponse2;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.services.CommentService;
 import jakarta.validation.Valid;
@@ -38,10 +39,21 @@ public class CommentController {
                 .body(commentService.addReplyToComment(commentId, request, userDetails.getUsername()));
     }
 
-    @GetMapping("/animal/{animalId}")
-    public ResponseEntity<SuccessResponseDTO<List<CommentResponse>>> getCommentsForAnimal(
+//    @GetMapping("/animal/{animalId}")
+//    public ResponseEntity<SuccessResponseDTO<List<CommentResponse2>>> getCommentsForAnimal(
+//            @PathVariable Long animalId) {
+//        return ResponseEntity.ok(commentService.getCommentsForAnimal(animalId));
+//    }
+    @GetMapping("/zone/{zoneId}/animal/{animalId}")
+    public ResponseEntity<SuccessResponseDTO<List<CommentResponse2>>> getCommentsForAnimal(
+            @PathVariable Long zoneId,
             @PathVariable Long animalId) {
-        return ResponseEntity.ok(commentService.getCommentsForAnimal(animalId));
+        return ResponseEntity.ok(commentService.getCommentsForAnimal(zoneId, animalId));
+    }
+
+    @GetMapping
+    public ResponseEntity<SuccessResponseDTO<List<CommentResponse>>> getAllComments() {
+        return ResponseEntity.ok(commentService.getAllComments());
     }
 
     @GetMapping("/{commentId}")
@@ -51,8 +63,14 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Object> deleteComment(
-            @PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
+            @PathVariable Long commentId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        // Verifica si el usuario es ADMIN (asumiendo que tienes un método para esto)
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        commentService.deleteComment(commentId, userDetails.getUsername(), isAdmin);
         return ResponseEntity.noContent().build();
     }
 }

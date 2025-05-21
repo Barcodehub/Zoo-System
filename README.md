@@ -132,13 +132,14 @@ src
 
 ### Comentarios
 
-| Método | URL | Descripción |
-|--------|-----|-------------|
-| POST | /api/comments | Crear comentario |
-| POST | /api/comments/{commentId}/replies | Responder a un comentario |
-| GET | /api/comments/{commentId} | Obtener comentario por ID |
-| DELETE | /api/comments/{commentId} | Eliminar comentario (solo ADMIN) |
-| GET | /api/comments/animal/{animalId} | Listar comentarios de un animal |
+| Método | URL                                           | Descripción                                                         |
+|--------|-----------------------------------------------|---------------------------------------------------------------------|
+| GET    | /api/comments                                 | Obtener todos los comentarios  (Admin)                              |
+| POST   | /api/comments                                 | Crear comentario                                                    |
+| POST   | /api/comments/{commentId}/replies             | Responder a un comentario                                           |
+| GET    | /api/comments/{commentId}                     | Obtener comentario por ID                                           |
+| DELETE | /api/comments/{commentId}                     | Eliminar comentario (solo ADMIN)                                    |
+| GET    | /api/comments/zone/{zonaID}/animal/{animalID} | Listar comentarios de un animal especifico en una zona especificada |
 
 ### Estadísticas
 

@@ -2,6 +2,7 @@ package com.nelumbo.zoo_api.services;
 
 import com.nelumbo.zoo_api.dto.SpeciesRequest;
 import com.nelumbo.zoo_api.dto.SpeciesResponse;
+import com.nelumbo.zoo_api.dto.errors.ResponseMessages;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.exception.IllegalOperationException;
 import com.nelumbo.zoo_api.models.Species;
@@ -31,9 +32,12 @@ public class SpeciesService {
 
 
     public SuccessResponseDTO<List<SpeciesResponse>> getAllSpecies() {
-        return  new SuccessResponseDTO<>(speciesRepository.findAll().stream()
-                .map(species -> mapToSpeciesResponse(species))
-                .toList());
+        List<SpeciesResponse> result = speciesRepository.findAll().stream()
+                .map(this::mapToSpeciesResponse)
+                .toList();
+        return result.isEmpty()
+                ? new SuccessResponseDTO<>(null, ResponseMessages.NO_SPECIES)
+                : new SuccessResponseDTO<>(result);
     }
 
     public SuccessResponseDTO<SpeciesResponse> getSpeciesById(@SpeciesExists Long id) {

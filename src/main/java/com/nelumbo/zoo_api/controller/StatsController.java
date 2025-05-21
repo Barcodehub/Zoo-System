@@ -1,9 +1,6 @@
 package com.nelumbo.zoo_api.controller;
 
-import com.nelumbo.zoo_api.dto.AnimalCountBySpecies;
-import com.nelumbo.zoo_api.dto.AnimalCountByZone;
-import com.nelumbo.zoo_api.dto.AnimalDetailResponse;
-import com.nelumbo.zoo_api.dto.SearchResults;
+import com.nelumbo.zoo_api.dto.*;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.services.StatsService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +36,7 @@ public class StatsController {
     }
 
     @GetMapping("/animals-by-date")
-    public ResponseEntity<SuccessResponseDTO<List<AnimalDetailResponse>>> getAnimalsByDate(
+    public ResponseEntity<SuccessResponseDTO<List<AnimalResponse>>> getAnimalsByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.ok(statsService.getAnimalsByRegistrationDate(date));
     }

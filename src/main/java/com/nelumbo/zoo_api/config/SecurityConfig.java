@@ -69,13 +69,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/api/zones/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/api/zones/**").hasAuthority("ROLE_ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/api/comments/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.DELETE, "/api/comments/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/comments").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.POST, "/api/comments/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.DELETE, "/api/comments/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
 
-                                .requestMatchers(HttpMethod.GET, "/api/stats/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.POST, "/api/stats/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.PUT, "/api/stats/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.DELETE, "/api/stats/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/stats/**").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager->

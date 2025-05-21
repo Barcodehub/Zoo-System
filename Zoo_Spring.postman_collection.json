@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4f4d09fb-f827-44f5-9b11-01ae9ca58d5e",
+		"_postman_id": "be245bed-aa17-4613-9956-2b546f54cba0",
 		"name": "Zoo_Spring",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "32173760"
@@ -78,7 +78,7 @@
 								"login"
 							]
 						},
-						"description": "### Login Endpoint\n\nThis endpoint is used to authenticate a user and obtain an access token for further API requests. (ADMIN - SOCIO)\n\n#### Request Body\n\n- `email` (string): The email address of the user.\n    \n- `password` (string): The password of the user.\n    \n\n#### Response\n\nThe response will include the authentication token along with other relevant user information."
+						"description": "StartFragment\n\n- **Método:** POST\n    \n- **Endpoint:** `/api/auth/login`\n    \n- **Descripción:** Iniciar sesión (Admin/User)\n    \n\nEndFragment"
 					},
 					"response": []
 				},
@@ -103,7 +103,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Juan Pérez\",\r\n    \"email\": \"juanexample.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Juan Pérez\",\r\n    \"email\": \"juan@example.com\",\r\n    \"password\": \"Password1!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -122,7 +122,7 @@
 								"users"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "StartFragment\n\n#### Registrar Usuario (Admin)\n\n- **Método:** POST\n    \n- **Endpoint:** `/api/users`\n    \n- **Descripción:** El Admin puede crear usuarios de rol empleado\n    \n- **Headers:** `Authorization: Bearer`\n    \n\nEndFragment"
 					},
 					"response": []
 				}
@@ -152,7 +152,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Zona de sas\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Zona de caninos\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -171,7 +171,7 @@
 								"zones"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "StartFragment\n\n- **Método:** POST\n    \n- **Endpoint:** `/api/zones`\n    \n- **Descripción:** Crear nueva zona (solo Admin)\n    \n- **Headers:** `Authorization: Bearer`\n    \n\nEndFragment  \n  \n\n#### Response\n\nThe response is in the form of a JSON schema:\n\n``` json\n{\n    \"data\": {\n        \"id\": 6,\n        \"name\": \"Zona de felinos\",\n        \"animals\": []\n    },\n    \"errors\": null\n}\n\n ```\n\nUpon successful creation, the response will include the details of the newly created zone."
 					},
 					"response": []
 				},
@@ -204,7 +204,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/zones/4",
+							"raw": "http://localhost:8080/api/zones/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -213,10 +213,10 @@
 							"path": [
 								"api",
 								"zones",
-								"4"
+								"1"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "StartFragment\n\n#### Actualizar Zona (Admin)\n\n- **Método:** PUT\n    \n- **Endpoint:** `/api/zones/{id}`\n    \n- **Descripción:** Actualizar información de zona (solo Admin)\n    \n- **Headers:** `Authorization: Bearer`\n    \n\nEndFragment  \n  \n\n#### Example\n\n``` json\n{\n  \"data\": {\n    \"id\": 0,\n    \"name\": \"string\",\n    \"animals\": [\n      {\n        \"id\": 0,\n        \"name\": \"string\"\n      }\n    ]\n  },\n  \"errors\": \"string\"\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -251,7 +251,7 @@
 								"zones"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "- **Método:** GET\n    \n- **Endpoint:** `/api/zones`\n    \n- **Descripción:** Obtener todas las zonas disponibles\n    \n\n- **Respuesta Exitosa (200):**\n    \n\nStartFragment\n\n```\n{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Sabana\",\n      \"animals\": [\n        {\n          \"id\": 1,\n          \"name\": \"León\"\n        }\n      ]\n    }\n  ],\n  \"errors\": null\n}\n\n ```\n\nEndFragment"
 					},
 					"response": []
 				},
@@ -287,7 +287,7 @@
 								"1"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Obtener Zona por ID\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/zones/{id}`\n    \n- **Descripción:** Obtener la zona especificada\n    \n- **Respuesta Exitosa (200):**\n    \n\n```\n{\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Sabana\",\n    \"animals\": [\n      {\n        \"id\": 1,\n        \"name\": \"León\"\n      }\n    ]\n  },\n  \"errors\": null\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -311,7 +311,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/zones/4",
+							"raw": "http://localhost:8080/api/zones/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -320,10 +320,10 @@
 							"path": [
 								"api",
 								"zones",
-								"4"
+								"1"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Eliminar Zona (Admin)\n\n- **Método:** DELETE\n    \n- **Endpoint:** `/api/zones/{id}`\n    \n- **Descripción:** Eliminar zona (solo Admin, si no tiene animales)\n    \n- **Headers:** `Authorization: Bearer`\n    \n- **Respuesta Exitosa (204):** Sin contenido"
 					},
 					"response": []
 				}
@@ -353,7 +353,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"ses\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Caninos\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -372,7 +372,7 @@
 								"species"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "- **Método:** POST\n    \n- **Endpoint:** `/api/species`\n    \n- **Descripción:** Registrar nueva especie (solo Admin)\n    \n- **Headers:** `Authorization: Bearer`  \n    \n\n#### Response\n\nThe response for this request is documented as a JSON schema.\n\nStartFragment\n\n```\n{\n  \"data\": {\n    \"id\": 2,\n    \"name\": \"Elephas maximus\"\n  },\n  \"errors\": null\n}\n\n ```\n\nEndFragment"
 					},
 					"response": []
 				},
@@ -417,7 +417,7 @@
 								"4"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Actualizar Especie (Admin)\n\n- **Método:** PUT\n    \n- **Endpoint:** `/api/species/{id}`\n    \n- **Descripción:** Actualizar información de especie (solo Admin)\n    \n- **Headers:** `Authorization: Bearer`"
 					},
 					"response": []
 				},
@@ -452,7 +452,7 @@
 								"species"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Listar Especies\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/species`\n    \n- **Descripción:** Obtener todas las especies registradas\n    \n- **Respuesta Exitosa (200):**\n    \n\n#### Response\n\nThe response of this request is a JSON schema representing the details of the species.\n\n``` json\n{\n  \"data\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"errors\": null\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -476,7 +476,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/species/4",
+							"raw": "http://localhost:8080/api/species/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -485,10 +485,10 @@
 							"path": [
 								"api",
 								"species",
-								"4"
+								"1"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Eliminar Especie (Admin)\n\n- **Método:** DELETE\n    \n- **Endpoint:** `/api/species/{id}`\n    \n- **Descripción:** Eliminar especie (solo Admin, si no tiene animales)\n    \n- **Headers:** `Authorization: Bearer`\n    \n- **Respuesta Exitosa (204):** Sin contenido"
 					},
 					"response": []
 				},
@@ -524,7 +524,7 @@
 								"1"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "- **Método:** GET\n    \n- **Endpoint:** `/api/species/{id}`\n    \n- **Descripción:** Obtener la especie especificada\n    \n- **Respuesta Exitosa (200):**\n    \n\n### Response\n\nThe response for this request is a JSON object with the details of the specified species. Below is a sample JSON schema for the response:\n\n``` json\n{\n  \"data\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"errors\": null\n}\n\n ```"
 					},
 					"response": []
 				}
@@ -554,7 +554,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"León Simba\",\r\n  \"speciesId\": 1,\r\n  \"zoneId\": 1\r\n}",
+							"raw": "{\r\n  \"name\": \"Leon Simba\",\r\n  \"speciesId\": 1,\r\n  \"zoneId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -573,7 +573,7 @@
 								"animals"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Crear Animal (Admin)\n\n- **Método:** POST\n    \n- **Endpoint:** `/api/animals`\n    \n- **Descripción:** Registrar nuevo animal (solo Admin)\n    \n- **Headers:** `Authorization: Bearer`\n    \n\n- **Respuesta Exitosa (201):**\n    \n\n```\n{\n  \"data\": {\n    \"id\": 2,\n    \"name\": \"Dumbo\",\n    \"species\": {\n      \"id\": 2,\n      \"name\": \"Elephas maximus\"\n    },\n    \"zone\": {\n      \"id\": 1,\n      \"name\": \"Sabana\"\n    },\n    \"registrationDate\": \"2023-05-20\",\n    \"comments\": []\n  },\n  \"errors\": null\n}\n\n ```\n\nEndFragment"
 					},
 					"response": []
 				},
@@ -598,7 +598,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"León Simba\", //y si no le quiero cambiar el nombre?\r\n  \"speciesId\": 2,\r\n  \"zoneId\": 1\r\n}",
+							"raw": "{\r\n  \"name\": \"León Simba\",\r\n  \"speciesId\": 2,\r\n  \"zoneId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -618,7 +618,7 @@
 								"2"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Actualizar Animal (Admin)\n\n- **Método:** PUT\n    \n- **Endpoint:** `/api/animals/{id}`\n    \n- **Descripción:** Actualizar información de animal (solo Admin)\n    \n- **Headers:** `Authorization: Bearer`"
 					},
 					"response": []
 				},
@@ -653,7 +653,7 @@
 								"animals"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "- **Método:** GET\n    \n- **Endpoint:** `/api/animals`\n    \n- **Descripción:** Obtener todos los animales registrados\n    \n- **Respuesta Exitosa (200):**\n    \n\n```\n{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Simba\",\n      \"species\": {\n        \"id\": 1,\n        \"name\": \"Panthera leo\"\n      },\n      \"zone\": {\n        \"id\": 1,\n        \"name\": \"Sabana\"\n      },\n      \"registrationDate\": \"2023-05-15\",\n      \"comments\": []\n    }\n  ],\n  \"errors\": null\n}\n\n ```\n\nEndFragment"
 					},
 					"response": []
 				},
@@ -689,7 +689,7 @@
 								"3"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Eliminar Animal (Admin)\n\n- **Método:** DELETE\n    \n- **Endpoint:** `/api/animals/{id}`\n    \n- **Descripción:** Eliminar animal y sus comentarios (solo Admin)\n    \n- **Headers:** `Authorization: Bearer`\n    \n- **Respuesta Exitosa (204):** Sin contenido"
 					},
 					"response": []
 				},
@@ -725,49 +725,7 @@
 								"1"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
-					},
-					"response": []
-				},
-				{
-					"name": "SEARCH ANIMALS x DATE",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:8080/api/animals/by-date?date=2025-05-20",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"animals",
-								"by-date"
-							],
-							"query": [
-								{
-									"key": "date",
-									"value": "2025-05-20"
-								}
-							]
-						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Obtener Animal por ID\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/animals/{id}`\n    \n- **Descripción:** Obtener detalles de un animal específico\n    \n- **Respuesta Exitosa (200):** Similar al objeto animal en la lista"
 					},
 					"response": []
 				}
@@ -797,7 +755,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"message\": \"El león parece muy saludable\",\r\n  \"animalId\": 1\r\n}",
+							"raw": "{\r\n  \"message\": \"El leon parece muy saludable\",\r\n  \"animalId\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -816,7 +774,7 @@
 								"comments"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Crear Comentario\n\n- **Método:** POST\n    \n- **Endpoint:** `/api/comments`\n    \n- **Descripción:** Agregar comentario a un animal (Admin y Empleados)\n    \n- **Headers:** `Authorization: Bearer`\n    \n\n**Respuesta Exitosa (201):**\n\n```\n{\n  \"id\": 2,\n  \"message\": \"El león necesita revisión veterinaria\",\n  \"author\": \"empleado@zoo.com\",\n  \"createdAt\": \"2023-05-20T14:25:00Z\",\n  \"animalId\": 1,\n  \"parentCommentId\": null,\n  \"replies\": []\n}\n\n ```\n\nEndFragment"
 					},
 					"response": []
 				},
@@ -849,7 +807,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/comments/3/replies",
+							"raw": "http://localhost:8080/api/comments/1/replies",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -858,11 +816,86 @@
 							"path": [
 								"api",
 								"comments",
-								"3",
+								"1",
 								"replies"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Responder Comentario\n\n- **Método:** POST\n    \n- **Endpoint:** `/api/comments/{commentId}/replies`\n    \n- **Descripción:** Agregar respuesta a un comentario existente\n    \n- **Headers:** `Authorization: Bearer`  \n    \n\n**Respuesta Exitosa (201):**\n\n```\n{\n  \"id\": 3,\n  \"message\": \"Revisión programada para mañana\",\n  \"author\": \"admin@zoo.com\",\n  \"createdAt\": \"2023-05-20T15:30:00Z\",\n  \"animalId\": 1,\n  \"parentCommentId\": 2,\n  \"replies\": []\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "GET COMMENT",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/comments/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comments",
+								"1"
+							]
+						},
+						"description": "#### Obtener Comentario con Respuestas\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/comments/{commentId}`\n    \n- **Descripción:** Obtener comentario con sus respuestas\n    \n- **Respuesta Exitosa (200):**\n    \n\n#### Response\n\nThe response for this request can be documented as a JSON schema:\n\n``` json\n{\n  \"id\": 2,\n  \"message\": \"El león necesita revisión veterinaria\",\n  \"author\": \"empleado@zoo.com\",\n  \"createdAt\": \"2023-05-20T14:25:00Z\",\n  \"animalId\": 1,\n  \"parentCommentId\": null,\n  \"replies\": [\n    {\n      \"id\": 3,\n      \"message\": \"Revisión programada para mañana\",\n      \"author\": \"admin@zoo.com\",\n      \"createdAt\": \"2023-05-20T15:30:00Z\"\n    }\n  ]\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "GET COMMENT x Zone And Animal",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/comments/zone/4/animal/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"comments",
+								"zone",
+								"4",
+								"animal",
+								"5"
+							]
+						},
+						"description": "\"Es necesario seleccionar la zona y luego el animal, allí se visualizará el listado de mensajes\"\n\n#### Comentarios por Zona y Animal\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/comments/zone/{zoneId}/animal/{animalId}`\n    \n- **Descripción:** Listar comentarios para un animal específico en una zona\n    \n\n**Respuesta Exitosa (200):**\n\nStartFragment\n\n```\n{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"message\": \"El león parece saludable\",\n      \"author\": \"empleado@zoo.com\",\n      \"createdAt\": \"2023-05-16T10:30:00Z\",\n      \"animalId\": 1,\n      \"animalName\": \"Simba\",\n      \"zoneId\": 1,\n      \"zoneName\": \"Sabana\",\n      \"parentCommentId\": null\n    }\n  ],\n  \"errors\": null\n}\n\n ```\n\nEndFragment"
 					},
 					"response": []
 				},
@@ -886,7 +919,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/comments/3",
+							"raw": "http://localhost:8080/api/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -894,53 +927,15 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"comments",
-								"3"
+								"comments"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Listar Comentarios\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/comments`\n    \n- **Descripción:** Ver todos los comentarios\n    \n- **Respuesta Exitosa (200):**"
 					},
 					"response": []
 				},
 				{
-					"name": "GET COMMENTS x Animal",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{authToken}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:8080/api/comments/animal/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"comments",
-								"animal",
-								"1"
-							]
-						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
-					},
-					"response": []
-				},
-				{
-					"name": "GET COMMENTS Copy",
+					"name": "DELETE COMMENTS",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -971,7 +966,7 @@
 								"1"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Eliminar Comentario\n\n- **Método:** DELETE\n    \n- **Endpoint:** `/api/comments/{commentId}`\n    \n- **Descripción:** Eliminar comentario y sus respuestas (Admin puede borrar cualquier comentario)\n    \n- **Headers:** `Authorization: Bearer`\n    \n- **Respuesta Exitosa (204):** Sin contenido"
 					},
 					"response": []
 				}
@@ -1012,7 +1007,7 @@
 								"animals-by-zone"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Animales por Zona\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/stats/animals-by-zone`\n    \n- **Descripción:** Conteo de animales agrupados por zona\n    \n- **Respuesta Exitosa (200):**\n    \n\nStartFragment\n\n```\n[\n  {\n    \"zoneName\": \"Sabana\",\n    \"animalCount\": 2\n  }\n]\n\n ```\n\nEndFragment"
 					},
 					"response": []
 				},
@@ -1048,7 +1043,7 @@
 								"animals-by-species"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Animales por Especie\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/stats/animals-by-species`\n    \n- **Descripción:** Conteo de animales agrupados por especie\n    \n- **Respuesta Exitosa (200):**\n    \n\n```\n[\n  {\n    \"speciesName\": \"Panthera leo\",\n    \"animalCount\": 1\n  }\n]\n\n ```"
 					},
 					"response": []
 				},
@@ -1072,7 +1067,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/stats/animals-by-date?date=2025-05-20",
+							"raw": "http://localhost:8080/api/stats/animals-by-date?date=2025-05-21",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1086,16 +1081,16 @@
 							"query": [
 								{
 									"key": "date",
-									"value": "2025-05-20"
+									"value": "2025-05-21"
 								}
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Animales por Fecha\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/stats/animals-by-date?date=2023-05-15`\n    \n- **Descripción:** Listar animales registrados en fecha específica\n    \n- **Respuesta Exitosa (200):**  \n    \n\n```\n[\n  {\n    \"id\": 1,\n    \"name\": \"Simba\",\n    \"species\": {\n      \"id\": 1,\n      \"name\": \"Panthera leo\"\n    },\n    \"zone\": {\n      \"id\": 1,\n      \"name\": \"Sabana\"\n    },\n    \"registrationDate\": \"2023-05-15\",\n    \"comments\": []\n  }\n]\n\n ```"
 					},
 					"response": []
 				},
 				{
-					"name": "GET ANIMALS GENERAL",
+					"name": "SEARCH GENERAL",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1132,7 +1127,7 @@
 								}
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "StartFragment\n\n#### Búsqueda Global\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/stats/search?query=león`\n    \n- **Descripción:** Buscar en zonas, animales, comentarios y respuestas\n    \n\n**Respuesta Exitosa (200):**  \n\n#### Response\n\n``` json\n{\n  \"zones\": [],\n  \"animals\": [\n    {\n      \"id\": 1,\n      \"name\": \"Simba\",\n      \"species\": \"Panthera leo\",\n      \"zone\": \"Sabana\",\n      \"registrationDate\": \"2023-05-15\"\n    }\n  ],\n  \"species\": [],\n  \"comments\": [\n    {\n      \"id\": 1,\n      \"message\": \"El león parece saludable\",\n      \"author\": \"empleado@zoo.com\",\n      \"createdAt\": \"2023-05-16T10:30:00Z\",\n      \"animalId\": 1,\n      \"animalName\": \"Simba\"\n    }\n  ],\n  \"replies\": []\n}\n\n ```"
 					},
 					"response": []
 				},
@@ -1168,7 +1163,7 @@
 								"answered-comments-percentage"
 							]
 						},
-						"description": "This endpoint allows you to create a new user by sending a POST request to the specified URL. The request should include a JSON payload in the raw request body type with the following parameters:\n\n- `name` (string): The name of the user.\n    \n- `email` (string): The email address of the user.\n    \n- `password` (string): The password for the user's account.\n    \n\nUpon successful creation, the response will include the details of the newly created user."
+						"description": "#### Porcentaje de Comentarios Respondidos\n\n- **Método:** GET\n    \n- **Endpoint:** `/api/stats/answered-comments-percentage`\n    \n- **Descripción:** Porcentaje de comentarios que han recibido respuesta\n    \n- **Respuesta Exitosa (200):** `50.0`"
 					},
 					"response": []
 				}
