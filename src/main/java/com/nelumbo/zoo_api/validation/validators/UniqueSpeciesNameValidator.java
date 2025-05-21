@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UniqueSpeciesNameValidator implements ConstraintValidator<UniqueSpeciesName, SpeciesRequest> {
+public class UniqueSpeciesNameValidator implements ConstraintValidator<UniqueSpeciesName, String> {
 
     private final SpeciesRepository speciesRepository;
 
     @Override
-    public boolean isValid(SpeciesRequest request, ConstraintValidatorContext context) {
-        if (request == null || request.name() == null) {
-            return true;
-        }
-        return !speciesRepository.existsByName(request.name());
+    public boolean isValid(String name, ConstraintValidatorContext context) {
+        if (name == null) return true;
+
+        return !speciesRepository.existsByName(name);
     }
 }
+

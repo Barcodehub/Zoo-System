@@ -3,6 +3,7 @@ package com.nelumbo.zoo_api.services;
 import com.nelumbo.zoo_api.dto.CommentReplyRequest;
 import com.nelumbo.zoo_api.dto.CommentRequest;
 import com.nelumbo.zoo_api.dto.CommentResponse;
+import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
 import com.nelumbo.zoo_api.models.Animal;
 import com.nelumbo.zoo_api.models.Comment;
@@ -26,11 +27,10 @@ public class CommentService {
     private final AnimalRepository animalRepository;
     private final UserRepository userRepository;
 
-    public CommentResponse addCommentToAnimal(@Valid CommentRequest request, String userEmail) {
-        Animal animal = animalRepository.findById(request.animalId())
-                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "animalId"));
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found", null));
+    public SuccessResponseDTO<CommentResponse> addCommentToAnimal(@Valid CommentRequest request, String userEmail) {
+
+        Animal animal = getAnimal(request.animalId());
+        User user = getUser(userEmail);
 
         Comment comment = new Comment();
         comment.setMessage(request.message());
@@ -39,16 +39,13 @@ public class CommentService {
         comment.setCreatedAt(new Date());
 
         comment = commentRepository.save(comment);
-        return mapToCommentResponse(comment);
+        return new SuccessResponseDTO<>(mapToCommentResponse(comment));
     }
 
-    public CommentResponse addReplyToComment(Long commentId, CommentReplyRequest request, String userEmail) {
+    public SuccessResponseDTO<CommentResponse> addReplyToComment(Long commentId, @Valid CommentReplyRequest request, String userEmail) {
 
-        Comment parentComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found", "commentId"));
-
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found", null));
+        Comment parentComment = getCommentOrThrow(commentId);
+        User user = getUser(userEmail);
 
         Comment reply = new Comment();
         reply.setMessage(request.message());
@@ -58,31 +55,48 @@ public class CommentService {
         reply.setCreatedAt(new Date());
 
         reply = commentRepository.save(reply);
-        return mapToCommentResponse(reply);
+        return new SuccessResponseDTO<>( mapToCommentResponse(reply));
     }
 
-    public List<CommentResponse> getCommentsForAnimal(
+    public SuccessResponseDTO<List<CommentResponse>> getCommentsForAnimal(
             @PathVariable Long animalId) {
-        animalRepository.findById(animalId)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "animalId"));
+        Animal animal = getAnimal(animalId);
 
-        return commentRepository.findByAnimalIdAndParentCommentIsNull(animalId).stream()
+        return new SuccessResponseDTO<>(
+                commentRepository.findByAnimalIdAndParentCommentIsNull(animalId).stream()
                 .map(this::mapToCommentResponse)
-                .toList();
+                .toList());
     }
 
-    public CommentResponse getCommentWithReplies(Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found", "commentId"));
+    public SuccessResponseDTO<CommentResponse> getCommentWithReplies(Long commentId) {
+        Comment comment = getCommentOrThrow(commentId);
 
-        return mapToCommentResponse(comment);
+        return new SuccessResponseDTO<>( mapToCommentResponse(comment));
     }
 
     public void deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment not found", "commentId"));
+        Comment comment = getCommentOrThrow(commentId);
 
         commentRepository.delete(comment);
+    }
+
+
+
+    private User getUser(String userEmail) {
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found", null));
+
+    }
+
+    private Animal getAnimal(Long animalId) {
+        return animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found", "animalId"));
+
+    }
+
+    private Comment getCommentOrThrow(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found", "commentId"));
     }
 
     private CommentResponse mapToCommentResponse(Comment comment) {

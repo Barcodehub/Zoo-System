@@ -36,6 +36,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     long countByParentCommentIsNull();
     long countByParentCommentIsNotNull();
+
     List<Comment> findByMessageContainingIgnoreCaseAndParentCommentIsNull(String message);
     List<Comment> findByMessageContainingIgnoreCaseAndParentCommentIsNotNull(String message);
 }

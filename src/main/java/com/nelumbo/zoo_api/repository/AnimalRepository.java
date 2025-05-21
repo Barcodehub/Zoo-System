@@ -38,5 +38,6 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     long countByZone(Zone zone);
     long countBySpecies(Species species);
     List<Animal> findByRegistrationDate(LocalDate date);
+
     List<Animal> findByNameContainingIgnoreCase(String name);
 }

@@ -23,11 +23,11 @@ public class Animal {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "species_id", nullable = false)
+    @JoinColumn(name = "species_id")
     private Species species;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zone_id", nullable = false)
+    @JoinColumn(name = "zone_id")
     private Zone zone;
 
     @Column(name = "registration_date", nullable = false)

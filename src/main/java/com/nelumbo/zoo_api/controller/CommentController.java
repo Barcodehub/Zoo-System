@@ -3,6 +3,7 @@ package com.nelumbo.zoo_api.controller;
 import com.nelumbo.zoo_api.dto.CommentReplyRequest;
 import com.nelumbo.zoo_api.dto.CommentRequest;
 import com.nelumbo.zoo_api.dto.CommentResponse;
+import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.services.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<CommentResponse> addCommentToAnimal(
+    public ResponseEntity<SuccessResponseDTO<CommentResponse>> addCommentToAnimal(
             @Valid @RequestBody CommentRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -29,27 +30,27 @@ public class CommentController {
     }
 
     @PostMapping("/{commentId}/replies")
-    public ResponseEntity<CommentResponse> addReplyToComment(
+    public ResponseEntity<SuccessResponseDTO<CommentResponse>> addReplyToComment(
             @PathVariable Long commentId,
-            @RequestBody CommentReplyRequest request,
+            @Valid  @RequestBody CommentReplyRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(commentService.addReplyToComment(commentId, request, userDetails.getUsername()));
     }
 
     @GetMapping("/animal/{animalId}")
-    public ResponseEntity<List<CommentResponse>> getCommentsForAnimal(
+    public ResponseEntity<SuccessResponseDTO<List<CommentResponse>>> getCommentsForAnimal(
             @PathVariable Long animalId) {
         return ResponseEntity.ok(commentService.getCommentsForAnimal(animalId));
     }
 
     @GetMapping("/{commentId}")
-    public ResponseEntity<CommentResponse> getCommentWithReplies(@PathVariable Long commentId) {
+    public ResponseEntity<SuccessResponseDTO<CommentResponse>> getCommentWithReplies(@PathVariable Long commentId) {
         return ResponseEntity.ok(commentService.getCommentWithReplies(commentId));
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> deleteComment(
+    public ResponseEntity<Object> deleteComment(
             @PathVariable Long commentId) {
         commentService.deleteComment(commentId);
         return ResponseEntity.noContent().build();

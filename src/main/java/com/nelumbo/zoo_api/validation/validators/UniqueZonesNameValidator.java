@@ -2,8 +2,8 @@ package com.nelumbo.zoo_api.validation.validators;
 
 
 import com.nelumbo.zoo_api.dto.ZoneRequest;
-import com.nelumbo.zoo_api.repository.SpeciesRepository;
-import com.nelumbo.zoo_api.validation.annotations.UniqueSpeciesName;
+import com.nelumbo.zoo_api.repository.ZoneRepository;
+import com.nelumbo.zoo_api.validation.annotations.UniqueZoneName;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -11,15 +11,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UniqueZonesNameValidator implements ConstraintValidator<UniqueSpeciesName, ZoneRequest> {
+public class UniqueZonesNameValidator implements ConstraintValidator<UniqueZoneName, String> {
 
-    private final SpeciesRepository speciesRepository;
+    private final ZoneRepository zonesRepository;
 
     @Override
-    public boolean isValid(ZoneRequest request, ConstraintValidatorContext context) {
-        if (request == null || request.name() == null) {
-            return true;
-        }
-        return !speciesRepository.existsByName(request.name());
+    public boolean isValid(String name, ConstraintValidatorContext context) {
+        if (name == null) return true;
+
+        return !zonesRepository.existsByName(name);
     }
 }

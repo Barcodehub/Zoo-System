@@ -178,35 +178,37 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDetailDTO> handleResourceNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFound(ResourceNotFoundException ex) {
         ErrorDetailDTO response = new ErrorDetailDTO(
-                "RESOURCE_NOT_FOUND",
+                "404",
                 ex.getMessage(),
                 ex.getField()
         );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDTO(null, List.of(response)));
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorDetailDTO> handleResourceAlreadyExists(ResourceAlreadyExistsException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleResourceAlreadyExists(ResourceAlreadyExistsException ex) {
         ErrorDetailDTO response = new ErrorDetailDTO(
-                "RESOURCE_ALREADY_EXISTS",
+                "409",
                 ex.getMessage(),
                 ex.getField()
         );
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDTO(null, List.of(response)));
     }
 
     @ExceptionHandler(IllegalOperationException.class)
-    public ResponseEntity<ErrorDetailDTO> handleIllegalOperation(IllegalOperationException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleIllegalOperation(IllegalOperationException ex) {
         ErrorDetailDTO response = new ErrorDetailDTO(
-                "ILLEGAL_OPERATION",
+                "400",
                 ex.getMessage(),
                 ex.getField()
         );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponseDTO(null, List.of(response)));
     }
-
 
 
 }

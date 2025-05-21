@@ -43,7 +43,7 @@ public class ZoneService {
         return new SuccessResponseDTO<>(mapToZoneResponse(zone));
     }
 
-    public SuccessResponseDTO<ZoneResponse> updateZone(@Valid @ZonaExist Long id, ZoneRequest request) {
+    public SuccessResponseDTO<ZoneResponse> updateZone(@Valid @ZonaExist Long id, @Valid ZoneRequest request) {
         Zone zone = zoneRepository.getReferenceById(id);
         zone.setName(request.name());
         zone = zoneRepository.save(zone);

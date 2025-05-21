@@ -41,7 +41,7 @@ public class SpeciesService {
         return new SuccessResponseDTO<>(mapToSpeciesResponse(species));
     }
 
-    public SuccessResponseDTO<SpeciesResponse> updateSpecies(@Valid @SpeciesExists Long id, SpeciesRequest request) {
+    public SuccessResponseDTO<SpeciesResponse> updateSpecies(@Valid @SpeciesExists Long id, @Valid SpeciesRequest request) {
         Species species = speciesRepository.getReferenceById(id);
 
         species.setName(request.name());
