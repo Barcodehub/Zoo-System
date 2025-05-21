@@ -688,7 +688,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CommentRequest'
+              $ref: '#/components/schemas/CommentReplyRequest'
         required: true
       responses:
         '200':
@@ -1335,6 +1335,11 @@ components:
         animalId:
           type: integer
           format: int64
+        message:
+          type: string
+    CommentReplyRequest:
+      type: object
+      properties:
         message:
           type: string
     CommentResponse:
