@@ -78,7 +78,7 @@ paths:
         required: true
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             '*/*':
               schema:
@@ -205,11 +205,7 @@ paths:
             format: int64
       responses:
         '204':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/SuccessResponseDTOVoid'
+          description:  No Content
         '400':
           $ref: '#/components/responses/badRequestResponse'
         '401':
@@ -332,11 +328,7 @@ paths:
             format: int64
       responses:
         '204':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/SuccessResponseDTOVoid'
+          description: No Content
         '400':
           $ref: '#/components/responses/badRequestResponse'
         '401':
@@ -459,11 +451,7 @@ paths:
             format: int64
       responses:
         '204':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/SuccessResponseDTOVoid'
+          description: No Content
         '400':
           $ref: '#/components/responses/badRequestResponse'
         '401':
@@ -532,7 +520,7 @@ paths:
         required: true
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             '*/*':
               schema:
@@ -605,7 +593,7 @@ paths:
         required: true
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             '*/*':
               schema:
@@ -658,7 +646,7 @@ paths:
         required: true
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             '*/*':
               schema:
@@ -705,7 +693,7 @@ paths:
         required: true
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             '*/*':
               schema:
@@ -778,7 +766,7 @@ paths:
         required: true
       responses:
         '201':
-          description: OK
+          description: Created
           content:
             '*/*':
               schema:
@@ -856,8 +844,7 @@ paths:
           content:
             '*/*':
               schema:
-                type: number
-                format: double
+                $ref: '#/components/schemas/SuccessResponseDTODouble'
         '400':
           $ref: '#/components/responses/badRequestResponse'
         '401':
@@ -1049,7 +1036,7 @@ paths:
             format: int64
       responses:
         '204':
-          description: OK
+          description: No Content
         '400':
           $ref: '#/components/responses/badRequestResponse'
         '401':
@@ -1119,7 +1106,7 @@ paths:
           $ref: '#/components/responses/serviceUnavailableResponse'
 components:
   schemas:
-    StandardError:
+    ErrorDetailDTO:
       type: object
       properties:
         code:
@@ -1140,22 +1127,17 @@ components:
           maxLength: 100
           description: Campo con error
           example: email
-        traceId:
-          type: string
-          format: uuid
-          description: ID de traza para diagnóstico
-          example: "550e8400-e29b-41d4-a716-446655440000"
       required:
         - code
         - description
 
-    StandardErrorResponse:
+    ErrorResponseDTO:
       type: object
       properties:
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/StandardError'
+            $ref: '#/components/schemas/ErrorDetailDTO'
     ZoneRequest:
       type: object
       properties:
@@ -1624,7 +1606,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             BadRequest:
               value:
@@ -1632,14 +1614,13 @@ components:
                   - code: "400"
                     description: "El campo ' ' es requerido"
                     field: "email"
-                    traceId: "550e8400-e29b-41d4-a716-446655440000"
 
     unauthorizedResponse:
       description: No autorizado
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             Unauthorized:
               value:
@@ -1652,7 +1633,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             Forbidden:
               value:
@@ -1665,7 +1646,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             NotFound:
               value:
@@ -1678,7 +1659,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             InternalError:
               value:
@@ -1691,7 +1672,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             NotAcceptable:
               value:
@@ -1704,7 +1685,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             PayloadTooLarge:
               value:
@@ -1717,7 +1698,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             UnsupportedMediaType:
               value:
@@ -1730,7 +1711,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             TooManyRequests:
               value:
@@ -1743,7 +1724,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/StandardErrorResponse'
+            $ref: '#/components/schemas/ErrorResponseDTO'
           examples:
             ServiceUnavailable:
               value:
