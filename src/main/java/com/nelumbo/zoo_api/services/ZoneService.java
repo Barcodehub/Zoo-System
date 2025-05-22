@@ -4,11 +4,12 @@ import com.nelumbo.zoo_api.dto.AnimalSimpleResponse;
 import com.nelumbo.zoo_api.dto.ZoneRequest;
 import com.nelumbo.zoo_api.dto.ZoneResponse;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
+import com.nelumbo.zoo_api.exception.BadRequestException;
 import com.nelumbo.zoo_api.exception.IllegalOperationException;
+import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
 import com.nelumbo.zoo_api.models.Zone;
 import com.nelumbo.zoo_api.repository.AnimalRepository;
 import com.nelumbo.zoo_api.repository.ZoneRepository;
-import com.nelumbo.zoo_api.validation.annotations.ZonaExist;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,20 +39,20 @@ public class ZoneService {
                 );
     }
 
-    public SuccessResponseDTO<ZoneResponse> getZoneById(@ZonaExist Long id) {
-        Zone zone = zoneRepository.getReferenceById(id);
+    public SuccessResponseDTO<ZoneResponse> getZoneById(Long id) {
+        Zone zone = zoneExist(id);
         return new SuccessResponseDTO<>(mapToZoneResponse(zone));
     }
 
-    public SuccessResponseDTO<ZoneResponse> updateZone(@Valid @ZonaExist Long id, @Valid ZoneRequest request) {
-        Zone zone = zoneRepository.getReferenceById(id);
+    public SuccessResponseDTO<ZoneResponse> updateZone(@Valid Long id, @Valid ZoneRequest request) {
+        Zone zone = zoneExist(id);
         zone.setName(request.name());
         zone = zoneRepository.save(zone);
         return new SuccessResponseDTO<>(mapToZoneResponse(zone));
     }
 
-    public SuccessResponseDTO<Void> deleteZone(@ZonaExist Long id) {
-        Zone zone = zoneRepository.getReferenceById(id);
+    public SuccessResponseDTO<Void> deleteZone(Long id) {
+        Zone zone = zoneExist(id);
 
         if (animalRepository.existsByZone(zone)) {
             throw new IllegalOperationException("Cannot delete zone with associated animals", null);
@@ -68,4 +69,13 @@ public class ZoneService {
 
         return new ZoneResponse(zone.getId(), zone.getName(), animalResponses);
     }
+
+    private Zone zoneExist(Long zoneId) {
+        if (zoneId == null) {
+            throw new BadRequestException("ID inválido: no puede ser nulo", "id");
+        }
+        return zoneRepository.findById(zoneId)
+                .orElseThrow(() -> new ResourceNotFoundException("Zona no encontrada", "id"));
+    }
+
 }

@@ -16,14 +16,11 @@ import com.nelumbo.zoo_api.repository.AnimalRepository;
 import com.nelumbo.zoo_api.repository.CommentRepository;
 import com.nelumbo.zoo_api.repository.UserRepository;
 import com.nelumbo.zoo_api.repository.ZoneRepository;
-import com.nelumbo.zoo_api.validation.annotations.AnimalExists;
-import com.nelumbo.zoo_api.validation.annotations.ZonaExist;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,23 +68,20 @@ public class CommentService {
         return new SuccessResponseDTO<>( mapToCommentResponse(reply));
     }
 
-    public SuccessResponseDTO<List<CommentResponse2>> getCommentsForAnimal(@ZonaExist Long zoneId, Long animalId) {
+    public SuccessResponseDTO<List<CommentResponse2>> getCommentsForAnimal(Long zoneId, Long animalId) {
 
-        Zone zone = zoneRepository.getReferenceById(zoneId);
+        Zone zone = validateZoneExists(zoneId);
+        Animal animal = validateAnimalExistsInZone(animalId, zoneId);
 
-        // 1. Validar que la zona y el animal existen y están relacionados
-        Animal animal = animalRepository.findByIdAndZoneId(animalId, zoneId)
-                .orElseThrow(() -> new ResourceNotFoundException("Animal no encontrado en la zona especificada", null));
-
-        // 2. Obtener comentarios principales (sin parent) con sus respuestas en una sola consulta
+        // Obtener comentarios principales (sin parent) con sus respuestas en una sola consulta
         List<Comment> topLevelComments = commentRepository.findByAnimalIdAndParentCommentIsNullWithReplies(animalId);
 
-        // 3. Mapear a DTO con estructura jerárquica
+        // Mapear a DTO con estructura jerárquica
         List<CommentResponse2> comments = topLevelComments.stream()
                 .map(comment -> mapToCommentResponseWithReplies(comment, zone, animal))
                 .toList();
 
-        // 4. Retornar respuesta
+        // Retornar respuesta
         return comments.isEmpty()
                 ? new SuccessResponseDTO<>(null, ResponseMessages.NO_COMMENTS_FOR_ANIMAL)
                 : new SuccessResponseDTO<>(comments);
@@ -161,7 +155,6 @@ public class CommentService {
         );
     }
 
-
     private CommentResponse2 mapToCommentResponseWithReplies(Comment comment, Zone zone, Animal animal) {
         return new CommentResponse2(
                 comment.getId(),
@@ -178,11 +171,22 @@ public class CommentService {
                         .toList()
         );
     }
+
     private String formatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
 
+    private Zone validateZoneExists(Long zoneId) {
+        return zoneRepository.findById(zoneId)
+                .orElseThrow(() -> new ResourceNotFoundException("Zona no encontrada", "zoneId"));
+    }
 
+    private Animal validateAnimalExistsInZone(Long animalId, Long zoneId) {
+        return animalRepository.findByIdAndZoneId(animalId, zoneId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Animal no encontrado en la zona especificada",
+                        "animalId"));
+    }
 
 }

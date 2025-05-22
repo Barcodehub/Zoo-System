@@ -3,9 +3,12 @@ package com.nelumbo.zoo_api.services;
 import com.nelumbo.zoo_api.dto.UserRequestDTO;
 import com.nelumbo.zoo_api.dto.UserResponseDTO;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
+import com.nelumbo.zoo_api.exception.BadRequestException;
 import com.nelumbo.zoo_api.exception.EmailAlreadyExistsException;
+import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
 import com.nelumbo.zoo_api.models.Role;
 import com.nelumbo.zoo_api.models.User;
+import com.nelumbo.zoo_api.models.Zone;
 import com.nelumbo.zoo_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +29,8 @@ public class UserService {
 
     @Transactional
     public SuccessResponseDTO<UserResponseDTO> createUser(@Valid UserRequestDTO userRequest) {
-        // Verificar si el email ya existe
-        String email = userRequest.email().trim().toLowerCase();
-        // Verificar email existente
-        if (userRepository.existsByEmail(email)) {
-            throw new EmailAlreadyExistsException("El email ya está registrado", "email");
-        }
+
+        emailExist(userRequest);
 
         // Crear nuevo usuario
         User user = new User();
@@ -50,7 +49,6 @@ public class UserService {
 
     }
 
-    // Otros métodos del servicio...
 
     private UserResponseDTO mapToUserResponseDTO(User user) {
         return new UserResponseDTO(
@@ -61,6 +59,14 @@ public class UserService {
         );
     }
 
+    private void emailExist(UserRequestDTO userRequest) {
+        // Verificar si el email ya existe
+        String email = userRequest.email().trim().toLowerCase();
+        // Verificar email existente
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistsException("El email ya está registrado", "email");
+        }
+    }
 
 
 

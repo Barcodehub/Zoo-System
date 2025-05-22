@@ -3,22 +3,19 @@ package com.nelumbo.zoo_api.services;
 import com.nelumbo.zoo_api.dto.*;
 import com.nelumbo.zoo_api.dto.errors.ResponseMessages;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
+import com.nelumbo.zoo_api.exception.BadRequestException;
+import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
 import com.nelumbo.zoo_api.models.Animal;
 import com.nelumbo.zoo_api.models.Species;
 import com.nelumbo.zoo_api.models.Zone;
 import com.nelumbo.zoo_api.repository.AnimalRepository;
-import com.nelumbo.zoo_api.repository.CommentRepository;
 import com.nelumbo.zoo_api.repository.SpeciesRepository;
 import com.nelumbo.zoo_api.repository.ZoneRepository;
-import com.nelumbo.zoo_api.validation.annotations.AnimalExists;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -29,16 +26,12 @@ public class AnimalService {
     private final AnimalRepository animalRepository;
     private final SpeciesRepository speciesRepository;
     private final ZoneRepository zoneRepository;
-    private final CommentRepository commentRepository;
 
+    //validar que existan
     public SuccessResponseDTO<AnimalResponse> createAnimal(@Valid AnimalRequest request) {
-        Species species = request.speciesId() != null
-                ? speciesRepository.getReferenceById(request.speciesId())
-                : null;
 
-        Zone zone = request.zoneId() != null
-                ? zoneRepository.getReferenceById(request.zoneId())
-                : null;
+        Species species = request.speciesId() != null ? specieExist(request.speciesId()) : null;
+        Zone zone = request.zoneId() != null ? zoneExist(request.zoneId()) : null;
 
         Animal animal = new Animal();
         animal.setName(request.name());
@@ -59,18 +52,15 @@ public class AnimalService {
                 : new SuccessResponseDTO<>(result);
     }
 
-    public SuccessResponseDTO<AnimalResponse> getAnimalById(@AnimalExists Long id) {
-        Animal animal = animalRepository.getReferenceById(id);
+    public SuccessResponseDTO<AnimalResponse> getAnimalById(Long id) {
+       Animal animal = animalExist(id);
         return new SuccessResponseDTO<>(mapToAnimalResponse(animal));
     }
 
-    public SuccessResponseDTO<AnimalResponse> updateAnimal(@AnimalExists Long id, @Valid AnimalRequest request) {
-        Animal animal = animalRepository.getReferenceById(id);
-        Species species = request.speciesId() != null ?
-                speciesRepository.findById(request.speciesId()).orElse(null) : null;
-
-        Zone zone = request.zoneId() != null ?
-                zoneRepository.findById(request.zoneId()).orElse(null) : null;
+    public SuccessResponseDTO<AnimalResponse> updateAnimal(Long id, @Valid AnimalRequest request) {
+        Animal animal = animalExist(id);
+        Species species = request.speciesId() != null ? specieExist(request.speciesId()) : null;
+        Zone zone = request.zoneId() != null ? zoneExist(request.zoneId()) : null;
 
         animal.setName(request.name());
         animal.setSpecies(species);
@@ -80,8 +70,8 @@ public class AnimalService {
         return new SuccessResponseDTO<>(mapToAnimalResponse(animal));
     }
 
-    public SuccessResponseDTO<Void> deleteAnimal(@AnimalExists Long id) {
-        Animal animal = animalRepository.getReferenceById(id);
+    public SuccessResponseDTO<Void> deleteAnimal(Long id) {
+        Animal animal = animalExist(id);
         animalRepository.delete(animal);
         return new SuccessResponseDTO<>(null);
     }
@@ -116,6 +106,25 @@ public class AnimalService {
         );
     }
 
+    private Animal animalExist(Long animalId) {
+        if (animalId == null) {
+            throw new BadRequestException("ID inválido: no puede ser nulo", "id");
+        }
+        return animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal no encontrado", "id"));
+    }
+
+    private Zone zoneExist(Long zoneId) {
+        if (zoneId == null) return null;
+        return zoneRepository.findById(zoneId)
+                .orElseThrow(() -> new ResourceNotFoundException("Zona no encontrada", "zoneId"));
+    }
+
+    private Species specieExist(Long specieId) {
+        if (specieId == null) return null;
+        return speciesRepository.findById(specieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Especie no encontrada", "speciesId"));
+    }
 
     private SpeciesSimpleResponse mapToSpeciesSimpleResponse(Species species) {
         return new SpeciesSimpleResponse(species.getId(), species.getName());
