@@ -70,10 +70,9 @@ public class AnimalService {
         return new SuccessResponseDTO<>(mapToAnimalResponse(animal));
     }
 
-    public SuccessResponseDTO<Void> deleteAnimal(Long id) {
+    public void deleteAnimal(Long id) {
         Animal animal = animalExist(id);
         animalRepository.delete(animal);
-        return new SuccessResponseDTO<>(null);
     }
 
 

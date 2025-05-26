@@ -11,6 +11,7 @@ import com.nelumbo.zoo_api.repository.AnimalRepository;
 import com.nelumbo.zoo_api.repository.CommentRepository;
 import com.nelumbo.zoo_api.repository.SpeciesRepository;
 import com.nelumbo.zoo_api.repository.ZoneRepository;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +69,6 @@ public class StatsService {
     }
 
     // 4. Animales registrados en una fecha específica
-
-
     public SuccessResponseDTO<List<AnimalResponse>> getAnimalsByRegistrationDate(LocalDate date) {
         Date startDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate = Date.from(date.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
@@ -110,6 +109,7 @@ public class StatsService {
     }
 
     // Métodos auxiliares de mapeo
+    @Generated
     private AnimalDetailResponse mapToAnimalDetailResponse(Animal animal) {
         return new AnimalDetailResponse(
                 animal.getId(),
@@ -120,14 +120,15 @@ public class StatsService {
         );
     }
 
+    @Generated
     private ZoneSearchResult mapToZoneSearchResult(Zone zone) {
         return new ZoneSearchResult(zone.getId(), zone.getName());
     }
-
+    @Generated
     private SpecieSearchResult mapToSpecieSearchResult(Species specie) {
         return new SpecieSearchResult(specie.getId(), specie.getName());
     }
-
+    @Generated
     private CommentSearchResult mapToCommentSearchResult(Comment comment) {
         return new CommentSearchResult(
                 comment.getId(),
@@ -138,7 +139,7 @@ public class StatsService {
                 comment.getAnimal().getName()
         );
     }
-
+    @Generated
     private ReplySearchResult mapToReplySearchResult(Comment reply) {
         return new ReplySearchResult(
                 reply.getId(),
@@ -151,7 +152,7 @@ public class StatsService {
                 reply.getAnimal().getName()
         );
     }
-
+    @Generated
     private AnimalResponse mapToAnimalResponse(Animal animal) {
         List<CommentSimpleResponse> comments = animal.getComments().stream()
                 .filter(comment -> comment.getParentComment() == null)
@@ -180,10 +181,11 @@ public class StatsService {
                 comments
         );
     }
+    @Generated
     private SpeciesSimpleResponse mapToSpeciesSimpleResponse(Species species) {
         return new SpeciesSimpleResponse(species.getId(), species.getName());
     }
-
+    @Generated
     private ZoneSimpleResponse mapToZoneSimpleResponse(Zone zone) {
         return new ZoneSimpleResponse(zone.getId(), zone.getName());
     }

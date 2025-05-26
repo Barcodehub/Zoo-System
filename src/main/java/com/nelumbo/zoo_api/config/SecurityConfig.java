@@ -12,13 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import java.util.List;
+import static com.nelumbo.zoo_api.constants.ApiPaths.*;
+import static com.nelumbo.zoo_api.constants.Roles.ADMIN;
+import static com.nelumbo.zoo_api.constants.Roles.EMPLOYEE;
 
 
 @Configuration
@@ -29,12 +32,12 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
         return http
-                .csrf(csrf ->
-                        csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(customAccessDeniedHandler())
                         .authenticationEntryPoint(authenticationEntryPoint())
@@ -51,29 +54,29 @@ public class SecurityConfig {
                                         "/swagger-resources/**",
                                         "/webjars/**"
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/users").hasAuthority("ROLE_ADMIN") //hasAnyAuthority
+                                .requestMatchers(HttpMethod.POST, REGISTRO).hasAuthority(ADMIN) //hasAnyAuthority
 
 
-                                .requestMatchers(HttpMethod.GET, "/api/animals/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.POST, "/api/animals/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/api/animals/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/animals/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, ANIMALES).hasAnyAuthority(ADMIN, EMPLOYEE)
+                                .requestMatchers(HttpMethod.POST, ANIMALES).hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.PUT, ANIMALES).hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.DELETE, ANIMALES).hasAuthority(ADMIN)
 
-                                .requestMatchers(HttpMethod.GET, "/api/species/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.POST, "/api/species/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/api/species/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/species/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, ESPECIES).hasAnyAuthority(ADMIN, EMPLOYEE)
+                                .requestMatchers(HttpMethod.POST, ESPECIES).hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.PUT, ESPECIES).hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.DELETE, ESPECIES).hasAuthority(ADMIN)
 
-                                .requestMatchers(HttpMethod.GET, "/api/zones/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.POST, "/api/zones/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/api/zones/**").hasAuthority("ROLE_ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/zones/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, ZONAS).hasAnyAuthority(ADMIN, EMPLOYEE)
+                                .requestMatchers(HttpMethod.POST, ZONAS).hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.PUT, ZONAS).hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.DELETE, ZONAS).hasAuthority(ADMIN)
 
-                                .requestMatchers(HttpMethod.GET, "/api/comments").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.POST, "/api/comments/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                                .requestMatchers(HttpMethod.DELETE, "/api/comments/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, COMENTARIO).hasAnyAuthority(ADMIN, EMPLOYEE)
+                                .requestMatchers(HttpMethod.POST, COMENTARIOS).hasAnyAuthority(ADMIN, EMPLOYEE)
+                                .requestMatchers(HttpMethod.DELETE, COMENTARIOS).hasAnyAuthority(ADMIN, EMPLOYEE)
 
-                                .requestMatchers(HttpMethod.GET, "/api/stats/**").hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(HttpMethod.GET, ESTADISTICAS).hasAuthority(ADMIN)
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager->

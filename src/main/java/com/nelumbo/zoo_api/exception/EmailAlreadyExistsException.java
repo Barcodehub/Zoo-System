@@ -1,6 +1,9 @@
 package com.nelumbo.zoo_api.exception;
 
 
+import lombok.Getter;
+
+@Getter
 public class EmailAlreadyExistsException extends RuntimeException {
     private final String fieldName;
 
@@ -8,6 +11,5 @@ public class EmailAlreadyExistsException extends RuntimeException {
         super(message);
         this.fieldName = fieldName;
     }
-    public String getFieldName() { return fieldName; }
 
 }

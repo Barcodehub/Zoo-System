@@ -54,7 +54,7 @@ public class SpeciesService {
         return new SuccessResponseDTO<>(mapToSpeciesResponse(species));
     }
 
-    public SuccessResponseDTO<Void> deleteSpecies(Long id) {
+    public void deleteSpecies(Long id) {
         Species species = specieExist(id);
 
         if (animalRepository.existsBySpecies(species)) {
@@ -62,7 +62,6 @@ public class SpeciesService {
         }
 
         speciesRepository.delete(species);
-        return new SuccessResponseDTO<>(null);
     }
 
 
@@ -72,7 +71,7 @@ public class SpeciesService {
 
     private Species specieExist(Long specieId) {
         if (specieId == null) {
-            throw new BadRequestException("ID inválido: no puede ser nulo", "id");
+            throw new BadRequestException("id", "ID inválido: no puede ser nulo");
         }
         return speciesRepository.findById(specieId)
                 .orElseThrow(() -> new ResourceNotFoundException("Especie no encontrada", "id"));

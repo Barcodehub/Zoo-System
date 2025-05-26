@@ -42,7 +42,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     List<Animal> findByRegistrationDate(LocalDate date);
 
     List<Animal> findByNameContainingIgnoreCase(String name);
-
+    boolean existsByName(String name);
 
     @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.replies WHERE c.animal.id = :animalId AND c.parentComment IS NULL")
     List<Comment> findByAnimalIdAndParentCommentIsNullWithReplies(@Param("animalId") Long animalId);

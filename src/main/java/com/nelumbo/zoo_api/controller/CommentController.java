@@ -39,11 +39,6 @@ public class CommentController {
                 .body(commentService.addReplyToComment(commentId, request, userDetails.getUsername()));
     }
 
-//    @GetMapping("/animal/{animalId}")
-//    public ResponseEntity<SuccessResponseDTO<List<CommentResponse2>>> getCommentsForAnimal(
-//            @PathVariable Long animalId) {
-//        return ResponseEntity.ok(commentService.getCommentsForAnimal(animalId));
-//    }
     @GetMapping("/zone/{zoneId}/animal/{animalId}")
     public ResponseEntity<SuccessResponseDTO<List<CommentResponse2>>> getCommentsForAnimal(
             @PathVariable Long zoneId,

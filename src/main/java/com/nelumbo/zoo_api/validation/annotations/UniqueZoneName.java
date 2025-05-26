@@ -1,6 +1,5 @@
 package com.nelumbo.zoo_api.validation.annotations;
 
-import com.nelumbo.zoo_api.validation.validators.UniqueSpeciesNameValidator;
 import com.nelumbo.zoo_api.validation.validators.UniqueZonesNameValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

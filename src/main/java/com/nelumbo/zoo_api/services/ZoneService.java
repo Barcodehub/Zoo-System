@@ -51,7 +51,7 @@ public class ZoneService {
         return new SuccessResponseDTO<>(mapToZoneResponse(zone));
     }
 
-    public SuccessResponseDTO<Void> deleteZone(Long id) {
+    public void deleteZone(Long id) {
         Zone zone = zoneExist(id);
 
         if (animalRepository.existsByZone(zone)) {
@@ -59,7 +59,6 @@ public class ZoneService {
         }
 
         zoneRepository.delete(zone);
-        return new SuccessResponseDTO<>(null);
     }
 
     private ZoneResponse mapToZoneResponse(Zone zone) {

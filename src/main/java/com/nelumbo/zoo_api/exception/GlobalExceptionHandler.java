@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -60,14 +59,6 @@ public class GlobalExceptionHandler {
     }
 
 
-    private ResponseEntity<ErrorResponseDTO> buildErrorResponse(HttpStatus status, String code, String message, String field) {
-        return ResponseEntity.status(status)
-                .body(new ErrorResponseDTO(
-                        null,
-                        List.of(new ErrorDetailDTO(code, message, field))
-                ));
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponseDTO> handleConstraintViolation(ConstraintViolationException ex) {
         List<ErrorDetailDTO> errors = ex.getConstraintViolations().stream()
@@ -75,7 +66,7 @@ public class GlobalExceptionHandler {
                         "400",  // Bad Request
                         v.getMessage(),
                         v.getPropertyPath().toString().split("\\.")[1]))
-                .collect(Collectors.toList());
+                .toList();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponseDTO(null, errors));
@@ -138,11 +129,10 @@ public class GlobalExceptionHandler {
         Object[] detailArgs = ex.getDetailMessageArguments();
         if (detailArgs != null) {
             for (Object arg : detailArgs) {
-                if (arg instanceof String) {
+                if (arg instanceof String str) {
                     errors.add(new ErrorDetailDTO(
                             "400",
-                            (String) arg,
-                            // Intentamos obtener el nombre del parámetro
+                            str,
                             extractParameterName(ex)
                     ));
                 }
@@ -151,9 +141,10 @@ public class GlobalExceptionHandler {
 
         // Si no encontramos detalles, usamos el mensaje general
         if (errors.isEmpty()) {
+            ex.getMessage();
             errors.add(new ErrorDetailDTO(
                     "400",
-                    ex.getMessage() != null ? ex.getMessage() : "Validation failed",
+                    ex.getMessage(),
                     null
             ));
         }
@@ -200,16 +191,6 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDTO(null, List.of(errorDetail)));
     }
 
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDTO> handleResourceAlreadyExists(ResourceAlreadyExistsException ex) {
-        ErrorDetailDTO response = new ErrorDetailDTO(
-                "409",
-                ex.getMessage(),
-                ex.getField()
-        );
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErrorResponseDTO(null, List.of(response)));
-    }
 
     @ExceptionHandler(IllegalOperationException.class)
     public ResponseEntity<ErrorResponseDTO> handleIllegalOperation(IllegalOperationException ex) {

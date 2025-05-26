@@ -37,7 +37,6 @@ public class User implements UserDetails {
     private Role role;
 
 
-
     //metodos de la clase UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

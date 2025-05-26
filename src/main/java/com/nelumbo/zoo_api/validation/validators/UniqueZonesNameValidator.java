@@ -1,7 +1,6 @@
 package com.nelumbo.zoo_api.validation.validators;
 
 
-import com.nelumbo.zoo_api.dto.ZoneRequest;
 import com.nelumbo.zoo_api.repository.ZoneRepository;
 import com.nelumbo.zoo_api.validation.annotations.UniqueZoneName;
 import jakarta.validation.ConstraintValidator;

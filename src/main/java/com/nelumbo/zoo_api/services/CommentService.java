@@ -25,7 +25,6 @@ import org.springframework.validation.annotation.Validated;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -141,7 +140,7 @@ public class CommentService {
         List<CommentResponse> replies = comment.getReplies() != null ?
                 comment.getReplies().stream()
                         .map(this::mapToCommentResponse)
-                        .collect(Collectors.toList()) :
+                        .toList() :
                 List.of();
 
         return new CommentResponse(

@@ -3,12 +3,9 @@ package com.nelumbo.zoo_api.services;
 import com.nelumbo.zoo_api.dto.UserRequestDTO;
 import com.nelumbo.zoo_api.dto.UserResponseDTO;
 import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
-import com.nelumbo.zoo_api.exception.BadRequestException;
 import com.nelumbo.zoo_api.exception.EmailAlreadyExistsException;
-import com.nelumbo.zoo_api.exception.ResourceNotFoundException;
 import com.nelumbo.zoo_api.models.Role;
 import com.nelumbo.zoo_api.models.User;
-import com.nelumbo.zoo_api.models.Zone;
 import com.nelumbo.zoo_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
