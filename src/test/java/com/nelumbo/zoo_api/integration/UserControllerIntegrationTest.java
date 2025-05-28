@@ -1,7 +1,5 @@
 package com.nelumbo.zoo_api.integration;
 
-import com.nelumbo.zoo_api.dto.UserResponseDTO;
-import com.nelumbo.zoo_api.dto.errors.SuccessResponseDTO;
 import com.nelumbo.zoo_api.models.Role;
 import com.nelumbo.zoo_api.models.User;
 import com.nelumbo.zoo_api.repository.UserRepository;
@@ -19,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc

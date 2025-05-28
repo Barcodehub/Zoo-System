@@ -12,6 +12,9 @@ Este proyecto implementa una API para la gestión de un zoológico con las sigui
 - Gestión de animales individuales
 - Sistema de comentarios y respuestas sobre animales
 - Estadísticas y reportes
+- Sesiones multidispositivo con logout individual
+- Limpieza automática de sesiones con token expirado cada hora
+- Requiere header `X-Device-Id` para validar sesión por dispositivo
 
 ## Requisitos
 

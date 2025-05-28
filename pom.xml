@@ -194,6 +194,8 @@
 						<exclude>com/nelumbo/zoo_api/models/**</exclude>
 						<exclude>com/nelumbo/zoo_api/dto/errors/ResponseMessages.class</exclude>
 						<exclude>com/nelumbo/zoo_api/ZooApiApplication.class</exclude>
+						<exclude>com/nelumbo/zoo_api/services/SessionCleanupService.class</exclude>
+						<exclude>com/nelumbo/zoo_api/services/SessionService.class</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

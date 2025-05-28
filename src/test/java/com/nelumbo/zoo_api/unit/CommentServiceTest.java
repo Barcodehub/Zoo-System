@@ -252,7 +252,7 @@ class CommentServiceTest {
         Comment comment2 = new Comment(2L, "Comment 2", "User2", new Date(),
                 new Animal(), null, new ArrayList<>());
 
-        when(commentRepository.findAll()).thenReturn(List.of(comment1, comment2));
+        when(commentRepository.findAllWithRelations()).thenReturn(List.of(comment1, comment2));
 
         // Act
         SuccessResponseDTO<List<CommentResponse>> response = commentService.getAllComments();
@@ -261,13 +261,13 @@ class CommentServiceTest {
         assertNotNull(response);
         assertEquals(2, response.data().size());
         assertEquals("Comment 1", response.data().get(0).message());
-        verify(commentRepository).findAll();
+        verify(commentRepository).findAllWithRelations();
     }
 
     @Test
     void getAllComments_WhenNoComments_ShouldReturnNoCommentsMessage() {
         // Arrange
-        when(commentRepository.findAll()).thenReturn(new ArrayList<>());
+        when(commentRepository.findAllWithRelations()).thenReturn(new ArrayList<>());
 
         // Act
         SuccessResponseDTO<List<CommentResponse>> response = commentService.getAllComments();

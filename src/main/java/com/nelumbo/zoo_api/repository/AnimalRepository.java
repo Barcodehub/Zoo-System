@@ -4,6 +4,7 @@ import com.nelumbo.zoo_api.models.Animal;
 import com.nelumbo.zoo_api.models.Comment;
 import com.nelumbo.zoo_api.models.Species;
 import com.nelumbo.zoo_api.models.Zone;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +21,11 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     List<Animal> findByZone(Zone zone);
     boolean existsBySpecies(Species species);
     boolean existsByZone(Zone zone);
+
+    @EntityGraph(attributePaths = {"species", "zone", "comments"})
+    @Query("SELECT a FROM Animal a")
+    List<Animal> findAllWithRelations();
+
 
     @Query("SELECT a FROM Animal a WHERE DATE(a.registrationDate) = DATE(:date)")
     List<Animal> findByRegistrationDate(@Param("date") Date date);

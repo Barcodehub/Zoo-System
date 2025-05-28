@@ -44,7 +44,7 @@ public class AnimalService {
     }
 
     public SuccessResponseDTO<List<AnimalResponse>> getAllAnimals() {
-        List<AnimalResponse> result = animalRepository.findAll().stream()
+        List<AnimalResponse> result = animalRepository.findAllWithRelations().stream()
                 .map(this::mapToAnimalResponse)
                 .toList();
         return result.isEmpty()

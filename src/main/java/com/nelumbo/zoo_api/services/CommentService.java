@@ -88,7 +88,7 @@ public class CommentService {
 
 
     public SuccessResponseDTO<List<CommentResponse>> getAllComments() {
-        List<CommentResponse> result = commentRepository.findAll().stream()
+        List<CommentResponse> result = commentRepository.findAllWithRelations().stream()
                 .map(this::mapToCommentResponse)
                 .toList();
         return result.isEmpty()

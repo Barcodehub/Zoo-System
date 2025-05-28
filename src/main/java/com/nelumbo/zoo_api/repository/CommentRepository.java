@@ -1,6 +1,7 @@
 package com.nelumbo.zoo_api.repository;
 
 import com.nelumbo.zoo_api.models.Comment;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByAnimalId(Long animalId);
     List<Comment> findByParentCommentId(Long parentCommentId);
 
-        List<Comment> findByAnimalIdAndParentCommentIsNull(Long animalId);
+    @EntityGraph(attributePaths = {"animal", "replies", "parentComment"})
+    @Query("SELECT c FROM Comment c")
+    List<Comment> findAllWithRelations();
+
+    List<Comment> findByAnimalIdAndParentCommentIsNull(Long animalId);
 
         @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.replies WHERE c.id = :id")
         Optional<Comment> findByIdWithReplies(@Param("id") Long id);

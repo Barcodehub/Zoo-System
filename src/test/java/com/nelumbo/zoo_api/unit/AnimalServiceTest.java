@@ -86,7 +86,7 @@ class AnimalServiceTest {
     @Test
     void getAllAnimals_WhenNoAnimalsExist_ShouldReturnEmptyResponse() {
         // Arrange
-        when(animalRepository.findAll()).thenReturn(new ArrayList<>());
+        when(animalRepository.findAllWithRelations()).thenReturn(new ArrayList<>());
 
         // Act
         SuccessResponseDTO<List<AnimalResponse>> response = animalService.getAllAnimals();
@@ -94,7 +94,7 @@ class AnimalServiceTest {
         // Assert
         assertNull(response.data());
         assertEquals(ResponseMessages.NO_ANIMALS, response.errors());
-        verify(animalRepository).findAll();
+        verify(animalRepository).findAllWithRelations();
     }
 
     @Test

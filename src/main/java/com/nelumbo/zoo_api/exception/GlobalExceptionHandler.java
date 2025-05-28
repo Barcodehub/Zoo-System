@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
@@ -203,5 +204,25 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponseDTO(null, List.of(response)));
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponseDTO> handleConflict(IllegalStateException ex) {
+        ErrorDetailDTO response = new ErrorDetailDTO(
+                "409",
+                ex.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDTO(null, List.of(response)));
+    }
 
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<ErrorResponseDTO> handleMissingHeaders(MissingRequestHeaderException ex) {
+        ErrorDetailDTO error = new ErrorDetailDTO(
+                "400",
+                "El header " + ex.getHeaderName() + " es requerido",
+                null
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponseDTO(null, List.of(error)));
+    }
 }
