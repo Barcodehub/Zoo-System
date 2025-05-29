@@ -36,6 +36,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AuthRequestDTO'
         required: true
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -76,6 +78,8 @@ paths:
             schema:
               $ref: '#/components/schemas/UserRequestDTO'
         required: true
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '201':
           description: Created
@@ -117,6 +121,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -157,6 +162,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       requestBody:
         content:
           application/json:
@@ -203,6 +209,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '204':
           description:  No Content
@@ -240,6 +247,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -280,12 +288,14 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SpeciesRequest'
         required: true
+
       responses:
         '200':
           description: OK
@@ -326,6 +336,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '204':
           description: No Content
@@ -363,6 +374,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -403,6 +415,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       requestBody:
         content:
           application/json:
@@ -449,6 +462,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '204':
           description: No Content
@@ -479,6 +493,8 @@ paths:
       summary: Listar zonas
       description: Obtener todas las zonas disponibles
       operationId: getAllZones
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -518,6 +534,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ZoneRequest'
         required: true
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '201':
           description: Created
@@ -552,6 +570,8 @@ paths:
       summary: Listar especies
       description: Obtener todas las especies registradas
       operationId: getAllSpecies
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -591,6 +611,8 @@ paths:
             schema:
               $ref: '#/components/schemas/SpeciesRequest'
         required: true
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '201':
           description: Created
@@ -625,6 +647,8 @@ paths:
       operationId: getAllComments
       summary: Ver comentarios
       description: Ver todos los comentarios
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -644,6 +668,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CommentRequest'
         required: true
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '201':
           description: Created
@@ -685,6 +711,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       requestBody:
         content:
           application/json:
@@ -725,6 +752,8 @@ paths:
       summary: Listar animales
       description: Obtener todos los animales registrados
       operationId: getAllAnimals
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -764,6 +793,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AnimalRequest'
         required: true
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '201':
           description: Created
@@ -804,6 +835,7 @@ paths:
           required: true
           schema:
             type: string
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -838,6 +870,8 @@ paths:
       summary: Porcentaje de Comentarios respondidos
       description: Porcentaje de comentarios que han recibido respuesta
       operationId: getAnsweredCommentsPercentage
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -872,6 +906,8 @@ paths:
       summary: Animales por zona
       description: Conteo de animales agrupados por zona
       operationId: getAnimalsByZone
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -908,6 +944,8 @@ paths:
       summary: Animales por especie
       description: Conteo de animales agrupados por especie
       operationId: getAnimalsBySpecies
+      parameters:
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -951,6 +989,7 @@ paths:
           schema:
             type: string
             format: date
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -994,6 +1033,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -1034,6 +1074,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '204':
           description: No Content
@@ -1077,6 +1118,7 @@ paths:
           schema:
             type: integer
             format: int64
+        - $ref: '#/components/parameters/XDeviceIdHeader'
       responses:
         '200':
           description: OK
@@ -1105,6 +1147,17 @@ paths:
         '503':
           $ref: '#/components/responses/serviceUnavailableResponse'
 components:
+  parameters:
+    XDeviceIdHeader:
+      name: X-Device-Id
+      in: header
+      required: true
+      schema:
+        type: string
+        example: "device-abc123"
+      description:
+        Identificador único del dispositivo para validar la sesión.
+        Usado para gestionar sesiones multidispositivo.
   schemas:
     ErrorDetailDTO:
       type: object

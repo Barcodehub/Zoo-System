@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "be245bed-aa17-4613-9956-2b546f54cba0",
+		"_postman_id": "989a9747-24d8-4440-9699-d479c124b9b2",
 		"name": "Zoo_Spring",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "32173760"
@@ -54,6 +54,11 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -83,7 +88,40 @@
 					"response": []
 				},
 				{
-					"name": "CREATE SOCIO",
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const response = pm.response.json();\r",
+									"    const token = response.data?.token;\r",
+									"\r",
+									"    if (token) {\r",
+									"        pm.environment.set(\"authToken\", token);\r",
+									"        console.log(\"Token guardado:\", token);\r",
+									"    } else {\r",
+									"        console.warn(\"No se encontró el token en la respuesta.\");\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -98,6 +136,52 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "StartFragment\n\n- **Método:** POST\n    \n- **Endpoint:** `/api/auth/login`\n    \n- **Descripción:** Iniciar sesión (Admin/User)\n    \n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE EMPLOYEE",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -148,6 +232,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -191,6 +280,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -237,6 +331,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -271,6 +370,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -307,6 +411,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -348,6 +457,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -392,6 +506,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -438,6 +557,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -472,6 +596,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -508,6 +637,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -549,6 +683,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -593,6 +732,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -639,6 +783,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -673,6 +822,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -709,6 +863,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -750,6 +909,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -794,6 +958,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -841,6 +1010,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -876,6 +1050,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -916,6 +1095,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -950,6 +1134,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -992,6 +1181,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -1028,6 +1222,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -1063,6 +1262,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
@@ -1106,6 +1310,11 @@
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
 								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -1147,6 +1356,11 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Device-Id",
+								"value": "pc",
 								"type": "text"
 							}
 						],
